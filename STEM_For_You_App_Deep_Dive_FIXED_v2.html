@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>STEM For You Kenya – Learn, Explore, Build</title>
+<meta name="description" content="Kenya's #1 STEM learning app for children aged 10–18. Lessons in robotics, coding, maths, first aid, electrical systems and more.">
+<meta name="theme-color" content="#0D2B6E">
+<link rel="manifest" href="#" id="manifestLink">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--navy:#0D2B6E;--blue:#1B6EC2;--orange:#E87722;--green:#2E7D32;
+--yellow:#F5C518;--purple:#7B3FE4;--pink:#E91E8C;--teal:#00897B;
+--red:#D32F2F;--lightbg:#EEF4FB;--white:#FFFFFF;--text:#1A1A2E;
+--muted:#6B7A8D;--surface:#F8FAFC;--card:#FFFFFF;
+--shadow:0 2px 16px rgba(13,43,110,.10);
+--radius:14px;--radius-sm:8px;--radius-lg:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:var(--surface);color:var(--text);}
+
+/* ── SCREEN SYSTEM ── */
+.screen{position:fixed;inset:0;display:none;flex-direction:column;background:var(--surface);z-index:10;overflow:hidden;}
+.screen.active{display:flex;}
+
+/* ── SPLASH ── */
+#splash{background:linear-gradient(145deg,var(--navy) 0%,#1a3a7a 50%,#0a1f4e 100%);align-items:center;justify-content:center;gap:0;}
+.splash-logo{width:100px;height:100px;background:rgba(255,255,255,.12);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:48px;animation:pop .6s ease;}
+.splash-title{font-size:2rem;font-weight:900;color:#fff;margin-top:20px;letter-spacing:-1px;}
+.splash-title span{color:var(--yellow);}
+.splash-sub{font-size:.95rem;color:rgba(255,255,255,.65);margin-top:6px;font-weight:600;}
+.splash-bar{width:160px;height:4px;background:rgba(255,255,255,.15);border-radius:4px;margin-top:40px;overflow:hidden;}
+.splash-fill{height:100%;width:0%;background:var(--yellow);border-radius:4px;animation:load 2.2s ease forwards;}
+@keyframes pop{0%{transform:scale(.6);opacity:0;}100%{transform:scale(1);opacity:1;}}
+@keyframes load{0%{width:0%;}100%{width:100%;}}
+
+/* ── ONBOARDING ── */
+#onboard{background:linear-gradient(145deg,var(--navy),#1a3a7a);}
+.onboard-slide{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 30px;text-align:center;}
+.onboard-emoji{font-size:72px;margin-bottom:20px;}
+.onboard-title{font-size:1.7rem;font-weight:900;color:#fff;margin-bottom:12px;line-height:1.2;}
+.onboard-desc{font-size:1rem;color:rgba(255,255,255,.75);line-height:1.6;max-width:300px;}
+.onboard-dots{display:flex;gap:8px;justify-content:center;padding:16px;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);}
+.dot.active{background:var(--yellow);width:24px;border-radius:4px;}
+.onboard-btns{padding:20px 30px 40px;display:flex;gap:12px;}
+.btn-ob-skip{flex:1;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:#fff;border-radius:50px;padding:14px;font-weight:700;font-size:1rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.btn-ob-next{flex:2;background:var(--orange);border:none;color:#fff;border-radius:50px;padding:14px;font-weight:800;font-size:1rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+
+/* ── LOGIN/SIGNUP ── */
+#auth{background:var(--surface);}
+.auth-header{background:linear-gradient(135deg,var(--navy),var(--blue));padding:50px 24px 60px;position:relative;}
+.auth-wave{position:absolute;bottom:-2px;left:0;right:0;}
+.auth-logo{font-size:2rem;font-weight:900;color:#fff;}
+.auth-logo span{color:var(--yellow);}
+.auth-tagline{color:rgba(255,255,255,.75);font-size:.9rem;margin-top:4px;font-weight:600;}
+.auth-body{flex:1;padding:30px 24px;overflow-y:auto;}
+.auth-tabs{display:flex;background:var(--lightbg);border-radius:var(--radius-sm);padding:4px;margin-bottom:24px;}
+.auth-tab{flex:1;padding:10px;text-align:center;font-weight:700;font-size:.9rem;border-radius:6px;cursor:pointer;color:var(--muted);transition:.2s;}
+.auth-tab.active{background:#fff;color:var(--navy);box-shadow:var(--shadow);}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:6px;display:block;}
+.form-input{width:100%;padding:13px 14px;border-radius:var(--radius-sm);border:1.5px solid #E0E8F0;background:#fff;font-size:.95rem;font-family:'Nunito',sans-serif;color:var(--text);transition:.2s;outline:none;}
+.form-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(27,110,194,.12);}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A8D' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+.btn-primary{width:100%;padding:15px;background:var(--navy);color:#fff;border:none;border-radius:50px;font-weight:800;font-size:1rem;font-family:'Nunito',sans-serif;cursor:pointer;transition:.2s;}
+.btn-primary:active{transform:scale(.98);}
+.btn-primary.orange{background:var(--orange);}
+.divider{text-align:center;color:var(--muted);font-size:.82rem;font-weight:600;margin:16px 0;position:relative;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:#E0E8F0;}
+.divider::before{left:0;}.divider::after{right:0;}
+
+/* ── MAIN APP SHELL ── */
+#app{display:none;flex-direction:column;}
+#app.active{display:flex;}
+.app-header{background:#fff;padding:16px 20px 12px;border-bottom:1px solid #F0F4F8;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.app-header-left{display:flex;align-items:center;gap:10px;}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:800;color:#fff;}
+.greeting-name{font-weight:800;font-size:1rem;color:var(--navy);}
+.greeting-sub{font-size:.72rem;color:var(--muted);font-weight:600;}
+.header-xp{background:var(--lightbg);border-radius:50px;padding:5px 12px;display:flex;align-items:center;gap:6px;}
+.xp-icon{font-size:.9rem;}
+.xp-val{font-weight:800;font-size:.85rem;color:var(--navy);}
+
+.tab-content{flex:1;overflow:hidden;position:relative;}
+.tab-page{position:absolute;inset:0;overflow-y:auto;display:none;padding:16px 16px 90px;}
+.tab-page.active{display:block;}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{background:#fff;border-top:1px solid #F0F4F8;display:flex;padding:8px 0 env(safe-area-inset-bottom,8px);flex-shrink:0;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;cursor:pointer;transition:.2s;}
+.nav-item .nav-icon{font-size:1.3rem;transition:.2s;}
+.nav-item .nav-label{font-size:.62rem;font-weight:700;color:var(--muted);}
+.nav-item.active .nav-icon{transform:scale(1.15);}
+.nav-item.active .nav-label{color:var(--navy);}
+.nav-item:nth-child(3) .nav-icon{font-size:1.1rem;width:46px;height:46px;background:var(--navy);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-top:-16px;box-shadow:0 4px 16px rgba(13,43,110,.3);}
+.nav-item:nth-child(3).active .nav-icon{background:var(--orange);}
+
+/* ── HOME TAB ── */
+.hero-banner{background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;position:relative;overflow:hidden;}
+.hero-banner::after{content:'🔬';position:absolute;right:-10px;bottom:-10px;font-size:72px;opacity:.12;}
+.hero-greeting{font-size:1.2rem;font-weight:900;color:#fff;line-height:1.2;margin-bottom:6px;}
+.hero-greeting span{color:var(--yellow);}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.75);font-weight:600;margin-bottom:14px;}
+.progress-row{display:flex;align-items:center;gap:10px;}
+.prog-bar-bg{flex:1;height:8px;background:rgba(255,255,255,.2);border-radius:4px;overflow:hidden;}
+.prog-bar-fill{height:100%;background:var(--yellow);border-radius:4px;transition:width .6s ease;}
+.prog-pct{font-size:.78rem;font-weight:800;color:var(--yellow);}
+
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.section-title{font-size:1rem;font-weight:800;color:var(--navy);}
+.section-link{font-size:.78rem;color:var(--blue);font-weight:700;cursor:pointer;}
+
+.streak-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.streak-card{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;}
+.streak-icon{font-size:1.5rem;}
+.streak-num{font-size:1.3rem;font-weight:900;color:var(--navy);line-height:1;}
+.streak-label{font-size:.7rem;color:var(--muted);font-weight:600;}
+
+.subject-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;scrollbar-width:none;}
+.subject-scroll::-webkit-scrollbar{display:none;}
+.subject-chip{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;cursor:pointer;padding:12px 14px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);min-width:72px;border:2px solid transparent;transition:.2s;}
+.subject-chip.active{border-color:var(--navy);}
+.subject-chip .s-icon{font-size:1.6rem;}
+.subject-chip .s-name{font-size:.65rem;font-weight:800;color:var(--navy);text-align:center;line-height:1.2;}
+
+.lesson-card{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.2s;border:1.5px solid transparent;}
+.lesson-card:active,.lesson-card:hover{border-color:var(--blue);transform:translateX(2px);}
+.lc-icon-wrap{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+.lc-subject{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+.lc-title{font-size:.92rem;font-weight:800;color:var(--navy);margin-bottom:3px;}
+.lc-meta{font-size:.72rem;color:var(--muted);font-weight:600;}
+.lc-right{margin-left:auto;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.lc-xp{font-size:.7rem;font-weight:800;color:var(--orange);background:#FFF3E0;padding:2px 8px;border-radius:50px;}
+.lc-done{font-size:1.1rem;}
+.lc-lock{font-size:.9rem;opacity:.4;}
+
+/* ── LESSON READER ── */
+#lessonReader{background:#fff;}
+.reader-header{background:var(--navy);padding:16px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.reader-back{font-size:1.3rem;color:#fff;cursor:pointer;padding:4px;}
+.reader-title{font-size:.95rem;font-weight:800;color:#fff;flex:1;}
+.reader-progress{font-size:.78rem;color:rgba(255,255,255,.65);font-weight:600;}
+.reader-prog-bar{height:4px;background:rgba(255,255,255,.15);}
+.reader-prog-fill{height:100%;background:var(--yellow);transition:width .4s;}
+.reader-body{flex:1;overflow-y:auto;padding:24px 20px;}
+.lesson-step{display:none;}
+.lesson-step.active{display:block;}
+.step-tag{display:inline-block;padding:4px 12px;border-radius:50px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+.step-heading{font-size:1.3rem;font-weight:900;color:var(--navy);line-height:1.3;margin-bottom:12px;}
+.step-body{font-size:.95rem;line-height:1.7;color:#333;margin-bottom:16px;}
+.step-body strong{color:var(--navy);}
+.fact-box{background:var(--lightbg);border-left:4px solid var(--blue);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px;margin:14px 0;}
+.fact-box .fb-title{font-size:.78rem;font-weight:800;color:var(--blue);text-transform:uppercase;margin-bottom:4px;}
+.fact-box p{font-size:.88rem;line-height:1.6;color:var(--text);}
+.kenya-box{background:#E8F5E9;border-left:4px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px;margin:14px 0;}
+.kenya-box .kb-title{font-size:.78rem;font-weight:800;color:var(--green);text-transform:uppercase;margin-bottom:4px;}
+.quiz-section{background:var(--lightbg);border-radius:var(--radius);padding:16px;margin:14px 0;}
+.quiz-q{font-size:.95rem;font-weight:800;color:var(--navy);margin-bottom:12px;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{background:#fff;border:1.5px solid #E0E8F0;border-radius:var(--radius-sm);padding:12px 14px;font-size:.88rem;font-weight:700;cursor:pointer;transition:.2s;color:var(--text);}
+.quiz-opt:hover{border-color:var(--blue);}
+.quiz-opt.correct{border-color:var(--green);background:#E8F5E9;color:var(--green);}
+.quiz-opt.wrong{border-color:var(--red);background:#FFEBEE;color:var(--red);}
+.career-banner{background:linear-gradient(135deg,var(--purple),#5B2D9E);border-radius:var(--radius);padding:18px;margin:14px 0;color:#fff;}
+.career-banner .cb-title{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;opacity:.75;margin-bottom:6px;}
+.career-banner .cb-careers{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.career-chip{background:rgba(255,255,255,.15);border-radius:50px;padding:5px 12px;font-size:.75rem;font-weight:700;}
+.reader-footer{padding:16px 20px;background:#fff;border-top:1px solid #F0F4F8;flex-shrink:0;}
+.btn-next-step{width:100%;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:50px;font-weight:800;font-size:1rem;font-family:'Nunito',sans-serif;cursor:pointer;}
+.btn-complete{background:var(--green);}
+
+/* ── EXPLORE TAB (Subjects grid) ── */
+.explore-hero{background:linear-gradient(135deg,var(--purple),#5B2D9E);border-radius:var(--radius-lg);padding:18px;margin-bottom:16px;}
+.explore-hero h2{font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:4px;}
+.explore-hero p{font-size:.82rem;color:rgba(255,255,255,.75);font-weight:600;}
+.subjects-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.subj-card{background:#fff;border-radius:var(--radius);padding:18px 14px;box-shadow:var(--shadow);cursor:pointer;transition:.2s;position:relative;overflow:hidden;}
+.subj-card:active{transform:scale(.97);}
+.subj-card .sc-emoji{font-size:2rem;margin-bottom:8px;}
+.subj-card .sc-name{font-size:.95rem;font-weight:800;color:var(--navy);margin-bottom:3px;}
+.subj-card .sc-count{font-size:.72rem;color:var(--muted);font-weight:600;}
+.subj-card .sc-tag{position:absolute;top:10px;right:10px;font-size:.65rem;font-weight:800;padding:3px 8px;border-radius:50px;background:var(--lightbg);color:var(--blue);}
+.subj-card .sc-bar{height:4px;background:#F0F4F8;border-radius:2px;margin-top:10px;overflow:hidden;}
+.subj-card .sc-bar-fill{height:100%;border-radius:2px;background:var(--orange);}
+.careers-section{margin-top:20px;}
+.career-path-card{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:10px;display:flex;gap:12px;cursor:pointer;border:1.5px solid transparent;transition:.2s;}
+.career-path-card:hover{border-color:var(--purple);}
+.cpc-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.cpc-name{font-size:.92rem;font-weight:800;color:var(--navy);margin-bottom:2px;}
+.cpc-desc{font-size:.75rem;color:var(--muted);line-height:1.4;}
+.cpc-salary{font-size:.72rem;font-weight:800;color:var(--green);margin-top:4px;}
+
+/* ── PROJECTS TAB ── */
+.projects-hero{background:linear-gradient(135deg,var(--teal),#004D40);border-radius:var(--radius-lg);padding:18px;margin-bottom:16px;}
+.projects-hero h2{font-size:1.2rem;font-weight:900;color:#fff;}
+.projects-hero p{font-size:.82rem;color:rgba(255,255,255,.75);font-weight:600;margin-top:4px;}
+.btn-new-project{margin-top:12px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;border-radius:50px;padding:10px 20px;font-weight:800;font-size:.85rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.project-card{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:12px;}
+.pc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.pc-title{font-size:.95rem;font-weight:800;color:var(--navy);}
+.pc-status{font-size:.68rem;font-weight:800;padding:3px 10px;border-radius:50px;}
+.status-active{background:#E8F5E9;color:var(--green);}
+.status-progress{background:#FFF3E0;color:var(--orange);}
+.status-todo{background:var(--lightbg);color:var(--blue);}
+.pc-desc{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:10px;}
+.pc-prog-label{font-size:.72rem;font-weight:700;color:var(--navy);margin-bottom:4px;display:flex;justify-content:space-between;}
+.pc-prog-bar{height:6px;background:#F0F4F8;border-radius:3px;overflow:hidden;}
+.pc-prog-fill{height:100%;border-radius:3px;background:var(--teal);}
+.pc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.pc-tag{font-size:.68rem;font-weight:700;background:var(--lightbg);color:var(--blue);padding:3px 10px;border-radius:50px;}
+.pc-actions{display:flex;gap:8px;margin-top:12px;}
+.pc-btn{flex:1;padding:9px;border-radius:50px;font-size:.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;border:1.5px solid;}
+.pc-btn-view{background:#fff;color:var(--navy);border-color:#E0E8F0;}
+.pc-btn-update{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* Project modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;}
+.modal-overlay.open{display:flex;}
+.modal-sheet{background:#fff;border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:24px;width:100%;max-height:80vh;overflow-y:auto;}
+.modal-handle{width:40px;height:4px;background:#E0E8F0;border-radius:2px;margin:0 auto 20px;}
+.modal-title{font-size:1.1rem;font-weight:900;color:var(--navy);margin-bottom:16px;}
+.step-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.step-item{display:flex;align-items:center;gap:10px;padding:12px;background:var(--surface);border-radius:var(--radius-sm);}
+.step-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.2s;}
+.step-check.done{background:var(--green);border-color:var(--green);}
+.step-check .check-icon{font-size:.75rem;color:#fff;display:none;}
+.step-check.done .check-icon{display:block;}
+.step-text{font-size:.88rem;font-weight:600;color:var(--text);flex:1;}
+.step-text.done{text-decoration:line-through;color:var(--muted);}
+
+/* New project form */
+.new-project-form{display:flex;flex-direction:column;gap:14px;}
+.nf-label{font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:4px;display:block;}
+
+/* ── CHATBOT ── */
+#chatScreen{background:var(--surface);}
+.chat-header{background:var(--navy);padding:16px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.chat-bot-avatar{width:40px;height:40px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.chat-bot-name{font-weight:800;color:#fff;font-size:.95rem;}
+.chat-bot-status{font-size:.72rem;color:rgba(255,255,255,.65);font-weight:600;}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;}
+.msg{max-width:82%;display:flex;flex-direction:column;gap:4px;}
+.msg.bot{align-self:flex-start;}
+.msg.user{align-self:flex-end;}
+.msg-bubble{padding:12px 14px;border-radius:var(--radius);font-size:.88rem;line-height:1.6;}
+.msg.bot .msg-bubble{background:#fff;box-shadow:var(--shadow);border-radius:4px var(--radius) var(--radius) var(--radius);}
+.msg.user .msg-bubble{background:var(--navy);color:#fff;border-radius:var(--radius) var(--radius) 4px var(--radius);}
+.msg-time{font-size:.65rem;color:var(--muted);font-weight:600;padding:0 4px;}
+.msg.user .msg-time{text-align:right;}
+.quick-replies{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.quick-reply{background:#fff;border:1.5px solid var(--lightbg);border-radius:50px;padding:6px 14px;font-size:.78rem;font-weight:700;color:var(--navy);cursor:pointer;transition:.2s;font-family:'Nunito',sans-serif;}
+.quick-reply:hover{border-color:var(--blue);color:var(--blue);}
+.typing-indicator{display:none;align-items:center;gap:4px;padding:12px 14px;background:#fff;border-radius:var(--radius);width:60px;box-shadow:var(--shadow);}
+.typing-indicator.show{display:flex;}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:bounce .8s infinite;}
+.typing-dot:nth-child(2){animation-delay:.15s;}
+.typing-dot:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
+.chat-input-area{padding:12px 16px;background:#fff;border-top:1px solid #F0F4F8;display:flex;gap:10px;align-items:flex-end;flex-shrink:0;}
+.chat-input{flex:1;padding:11px 14px;border:1.5px solid #E0E8F0;border-radius:50px;font-size:.9rem;font-family:'Nunito',sans-serif;resize:none;outline:none;min-height:42px;max-height:100px;transition:.2s;}
+.chat-input:focus{border-color:var(--blue);}
+.chat-send{width:42px;height:42px;background:var(--navy);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;transition:.2s;}
+.chat-send:active{transform:scale(.9);}
+
+/* ── PROGRESS TAB ── */
+.prog-header{background:linear-gradient(135deg,var(--orange),#c96a18);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;}
+.prog-header h2{font-size:1.2rem;font-weight:900;color:#fff;}
+.prog-overview{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.po-stat{background:rgba(255,255,255,.15);border-radius:var(--radius-sm);padding:12px;text-align:center;}
+.po-num{font-size:1.5rem;font-weight:900;color:#fff;line-height:1;}
+.po-label{font-size:.68rem;color:rgba(255,255,255,.75);font-weight:700;margin-top:2px;}
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.badge-item{background:#fff;border-radius:var(--radius);padding:14px 10px;box-shadow:var(--shadow);text-align:center;}
+.badge-icon{font-size:2rem;margin-bottom:6px;}
+.badge-name{font-size:.68rem;font-weight:800;color:var(--navy);line-height:1.2;}
+.badge-locked{opacity:.35;}
+.subject-prog-item{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+.spi-icon{font-size:1.5rem;}
+.spi-name{font-size:.88rem;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.spi-bar-bg{flex:1;height:7px;background:#F0F4F8;border-radius:4px;overflow:hidden;}
+.spi-bar-fill{height:100%;border-radius:4px;transition:width .8s ease;}
+.spi-pct{font-size:.72rem;font-weight:800;color:var(--muted);min-width:30px;text-align:right;}
+
+/* ── TOAST ── */
+.toast-container{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:90%;max-width:360px;}
+.toast{background:var(--navy);color:#fff;padding:12px 18px;border-radius:50px;font-size:.88rem;font-weight:700;text-align:center;opacity:0;transform:translateY(-20px);transition:.4s;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:var(--green);}
+.toast.xp{background:var(--orange);}
+
+/* ── API DOCS ── */
+#apiDocs{background:var(--surface);}
+.api-header{background:var(--navy);padding:16px 20px;display:flex;align-items:center;gap:10px;}
+.api-back{color:#fff;font-size:1.3rem;cursor:pointer;}
+.api-header h2{color:#fff;font-size:1rem;font-weight:800;}
+.api-body{flex:1;overflow-y:auto;padding:20px;}
+.api-section{margin-bottom:20px;}
+.api-section h3{font-size:.95rem;font-weight:800;color:var(--navy);margin-bottom:8px;}
+.code-block{background:#1A1A2E;border-radius:var(--radius-sm);padding:14px;font-family:'Space Grotesk',monospace;font-size:.78rem;color:#A9C8F0;overflow-x:auto;margin-bottom:10px;line-height:1.7;}
+.code-block .k{color:#F5C518;}.code-block .s{color:#98F5A0;}.code-block .c{color:#888;}
+
+
+/* ── DEEP DIVE LESSON BLOCKS ── */
+.lesson-hero-img{width:100%;min-height:150px;border-radius:var(--radius);background-size:cover;background-position:center;margin:8px 0 14px;position:relative;overflow:hidden;box-shadow:var(--shadow);}
+.lesson-hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.42));}
+.lesson-img-caption{position:absolute;left:12px;right:12px;bottom:10px;color:#fff;font-size:.75rem;font-weight:800;z-index:1;text-shadow:0 1px 6px rgba(0,0,0,.4);}
+.activity-box{background:#FFF7E6;border:1.5px solid #FFE0A3;border-radius:var(--radius);padding:15px;margin:14px 0;}
+.activity-box .ab-title{font-size:.85rem;font-weight:900;color:#B85C00;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px;}
+.activity-meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 10px;}
+.activity-pill{background:#fff;border-radius:50px;padding:4px 10px;font-size:.68rem;font-weight:800;color:#B85C00;border:1px solid #FFE0A3;}
+.lesson-list{padding-left:18px;margin:8px 0;}
+.lesson-list li{margin:7px 0;font-size:.9rem;line-height:1.55;}
+.code-lab{background:#111827;border-radius:var(--radius);padding:14px;margin:14px 0;color:#D1E7FF;overflow-x:auto;font-family:'Space Grotesk',monospace;font-size:.78rem;line-height:1.7;white-space:pre-wrap;}
+.code-lab-title{font-size:.75rem;font-weight:900;color:#F5C518;text-transform:uppercase;margin-bottom:8px;font-family:'Nunito',sans-serif;}
+.project-brief{background:linear-gradient(135deg,var(--teal),#004D40);border-radius:var(--radius);padding:16px;margin:14px 0;color:#fff;}
+.project-brief .pb-title{font-size:.82rem;font-weight:900;text-transform:uppercase;opacity:.85;margin-bottom:6px;}
+.project-brief p,.project-brief li{font-size:.88rem;line-height:1.55;}
+.checklist-box{background:#F3F4FF;border-left:4px solid var(--purple);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px;margin:14px 0;}
+.checklist-box .cl-title{font-size:.78rem;font-weight:900;color:var(--purple);text-transform:uppercase;margin-bottom:6px;}
+.reflection-box{background:#FCE4EC;border-left:4px solid var(--pink);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px;margin:14px 0;}
+.reflection-box .rb-title{font-size:.78rem;font-weight:900;color:var(--pink);text-transform:uppercase;margin-bottom:6px;}
+.mini-note{background:#fff;border:1.5px dashed #D8E2EF;border-radius:var(--radius-sm);padding:12px;margin:10px 0;font-size:.86rem;line-height:1.55;color:var(--text);}
+
+/* ── UTILS ── */
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 1: SPLASH
+═══════════════════════════════════════════════ -->
+<div class="screen active" id="splash" style="align-items:center;justify-content:center;">
+  <div class="splash-logo">🔬</div>
+  <div class="splash-title">STEM <span>for You</span></div>
+  <div class="splash-sub">Inspiring Futures, Changing Lives</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 2: ONBOARDING
+═══════════════════════════════════════════════ -->
+<div class="screen" id="onboard">
+  <div class="onboard-slide">
+    <div class="onboard-emoji" id="obEmoji">🚀</div>
+    <h2 class="onboard-title" id="obTitle">Learn STEM Your Way</h2>
+    <p class="onboard-desc" id="obDesc">Explore robotics, coding, maths, science and more — designed specially for Kenyan students aged 10–18.</p>
+  </div>
+  <div class="onboard-dots">
+    <div class="dot active" id="dot0"></div>
+    <div class="dot" id="dot1"></div>
+    <div class="dot" id="dot2"></div>
+  </div>
+  <div class="onboard-btns">
+    <button class="btn-ob-skip" onclick="gotoAuth()">Skip</button>
+    <button class="btn-ob-next" id="obNextBtn" onclick="nextSlide()">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 3: AUTH
+═══════════════════════════════════════════════ -->
+<div class="screen" id="auth">
+  <div class="auth-header">
+    <div class="auth-logo">STEM <span>for You</span></div>
+    <div class="auth-tagline">Kenya's #1 STEM Learning App</div>
+    <svg class="auth-wave" viewBox="0 0 375 30" fill="var(--surface)" xmlns="http://www.w3.org/2000/svg"><path d="M0 30 Q187 0 375 30 L375 30 L0 30Z"/></svg>
+  </div>
+  <div class="auth-body">
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="loginTab" onclick="switchAuthTab('login')">Sign In</div>
+      <div class="auth-tab" id="signupTab" onclick="switchAuthTab('signup')">Create Account</div>
+    </div>
+    <!-- LOGIN -->
+    <div id="loginForm">
+      <div class="form-group"><label class="form-label">Username or Email</label><input class="form-input" type="email" id="loginEmail" placeholder="you@email.com"></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" id="loginPass" placeholder="Enter password"></div>
+      <button class="btn-primary" style="margin-top:8px;" onclick="doLogin()">Sign In to Learn 🚀</button>
+      <p style="text-align:center;margin-top:14px;font-size:.82rem;color:var(--muted);"><strong style="color:var(--blue);cursor:pointer;" onclick="guestLogin()">Continue as Guest (Demo)</strong></p>
+    </div>
+    <!-- SIGNUP -->
+    <div id="signupForm" class="hidden">
+      <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="sfFirst" placeholder="Wanjiku"></div>
+        <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="sfLast" placeholder="Kamau"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="sfEmail" placeholder="you@email.com"></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" id="sfPass" placeholder="Min 6 characters"></div>
+      <div class="form-group"><label class="form-label">School / County</label><input class="form-input" id="sfSchool" placeholder="e.g. Nairobi, Mombasa"></div>
+      <div class="form-group">
+        <label class="form-label">Class Level</label>
+        <select class="form-input form-select" id="sfGrade">
+          <option>Class 5</option><option>Class 6</option><option>Class 7</option><option>Class 8</option>
+          <option>Form 1</option><option>Form 2</option><option>Form 3</option><option>Form 4</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Favourite STEM Subject</label>
+        <select class="form-input form-select" id="sfSubject">
+          <option>Mathematics</option><option>Science / Biology</option><option>Computer Science</option>
+          <option>Engineering / Robotics</option><option>Physics</option><option>Chemistry</option>
+        </select>
+      </div>
+      <button class="btn-primary orange" style="margin-top:8px;" onclick="doSignup()">Create My Account 🌟</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN 4: MAIN APP
+═══════════════════════════════════════════════ -->
+<div class="screen" id="app">
+  <!-- Header -->
+  <div class="app-header">
+    <div class="app-header-left">
+      <div class="avatar" id="userAvatar">W</div>
+      <div>
+        <div class="greeting-name" id="greetingName">Hello, Wanjiku 👋</div>
+        <div class="greeting-sub" id="greetingSub">Class 8 · Nairobi</div>
+      </div>
+    </div>
+    <div class="header-xp">
+      <div class="xp-icon">⚡</div>
+      <div class="xp-val" id="xpDisplay">0 XP</div>
+    </div>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- HOME -->
+    <div class="tab-page active" id="tabHome">
+      <div class="hero-banner">
+        <div class="hero-greeting" id="heroBanner">Ready to explore <span>STEM today?</span></div>
+        <div class="hero-sub">You are on a 3-day streak! 🔥 Keep going!</div>
+        <div class="progress-row">
+          <div class="prog-bar-bg"><div class="prog-bar-fill" id="overallProg" style="width:0%"></div></div>
+          <div class="prog-pct" id="overallProgPct">0%</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">⚡ Quick Stats</div>
+      </div>
+      <div class="streak-row">
+        <div class="streak-card"><div class="streak-icon">🔥</div><div><div class="streak-num" id="statStreak">3</div><div class="streak-label">Day streak</div></div></div>
+        <div class="streak-card"><div class="streak-icon">📚</div><div><div class="streak-num" id="statLessons">0</div><div class="streak-label">Lessons done</div></div></div>
+        <div class="streak-card"><div class="streak-icon">🏆</div><div><div class="streak-num" id="statBadges">1</div><div class="streak-label">Badges earned</div></div></div>
+        <div class="streak-card"><div class="streak-icon">🎯</div><div><div class="streak-num" id="statProjects">0</div><div class="streak-label">Projects</div></div></div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">📚 Browse Subjects</div>
+      </div>
+      <div class="subject-scroll" id="subjectScrollHome">
+        <div class="subject-chip active" onclick="filterLessons('all')"><div class="s-icon">🌟</div><div class="s-name">All</div></div>
+        <div class="subject-chip" onclick="filterLessons('coding')"><div class="s-icon">💻</div><div class="s-name">Coding</div></div>
+        <div class="subject-chip" onclick="filterLessons('robotics')"><div class="s-icon">🤖</div><div class="s-name">Robotics</div></div>
+        <div class="subject-chip" onclick="filterLessons('maths')"><div class="s-icon">📐</div><div class="s-name">Maths</div></div>
+        <div class="subject-chip" onclick="filterLessons('science')"><div class="s-icon">🔬</div><div class="s-name">Science</div></div>
+        <div class="subject-chip" onclick="filterLessons('firstaid')"><div class="s-icon">🩺</div><div class="s-name">First Aid</div></div>
+        <div class="subject-chip" onclick="filterLessons('electrical')"><div class="s-icon">⚡</div><div class="s-name">Electrical</div></div>
+        <div class="subject-chip" onclick="filterLessons('agritech')"><div class="s-icon">🌾</div><div class="s-name">AgriTech</div></div>
+        <div class="subject-chip" onclick="filterLessons('biotech')"><div class="s-icon">🧬</div><div class="s-name">Biotech</div></div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">🎓 Lessons</div>
+      </div>
+      <div id="lessonList"></div>
+    </div>
+
+    <!-- EXPLORE -->
+    <div class="tab-page" id="tabExplore">
+      <div class="explore-hero">
+        <h2>🌍 Explore All STEM</h2>
+        <p>Pick a subject and discover your future career in Kenya and the world.</p>
+      </div>
+      <div class="section-header"><div class="section-title">📚 All Subjects</div></div>
+      <div class="subjects-grid" id="subjectsGrid"></div>
+      <div class="careers-section">
+        <div class="section-header" style="margin-top:20px;"><div class="section-title">🎯 Career Paths in Kenya</div></div>
+        <div id="careersList"></div>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="tab-page" id="tabProjects">
+      <div class="projects-hero">
+        <h2>🛠️ My Projects</h2>
+        <p>Build real STEM projects and track your progress step-by-step.</p>
+        <button class="btn-new-project" onclick="openNewProject()">+ Start New Project</button>
+      </div>
+      <div class="section-header"><div class="section-title">My Active Projects</div></div>
+      <div id="projectList"></div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="tab-page" id="tabProgress">
+      <div class="prog-header">
+        <h2>📊 My Progress</h2>
+        <div class="prog-overview">
+          <div class="po-stat"><div class="po-num" id="poLessons">0</div><div class="po-label">Lessons</div></div>
+          <div class="po-stat"><div class="po-num" id="poXP">0</div><div class="po-label">XP Points</div></div>
+          <div class="po-stat"><div class="po-num" id="poProjects">0</div><div class="po-label">Projects</div></div>
+          <div class="po-stat"><div class="po-num" id="poBadges">0</div><div class="po-label">Badges</div></div>
+        </div>
+      </div>
+      <div class="section-header"><div class="section-title">🏅 Badges Earned</div></div>
+      <div class="badge-grid" id="badgeGrid"></div>
+      <div class="section-header"><div class="section-title">📈 Progress By Subject</div></div>
+      <div id="subjectProgressList"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab('tabHome',this)"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></div>
+    <div class="nav-item" onclick="switchTab('tabExplore',this)"><div class="nav-icon">🔭</div><div class="nav-label">Explore</div></div>
+    <div class="nav-item" onclick="openChat()"><div class="nav-icon">🤖</div><div class="nav-label">STEM Bot</div></div>
+    <div class="nav-item" onclick="switchTab('tabProjects',this)"><div class="nav-icon">🛠️</div><div class="nav-label">Projects</div></div>
+    <div class="nav-item" onclick="switchTab('tabProgress',this)"><div class="nav-icon">📊</div><div class="nav-label">Progress</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     LESSON READER SCREEN
+═══════════════════════════════════════════════ -->
+<div class="screen" id="lessonReader">
+  <div class="reader-header">
+    <div class="reader-back" onclick="closeReader()">←</div>
+    <div class="reader-title" id="readerTitle">Lesson</div>
+    <div class="reader-progress" id="readerProgress">1 of 4</div>
+  </div>
+  <div class="reader-prog-bar"><div class="reader-prog-fill" id="readerProgFill" style="width:25%"></div></div>
+  <div class="reader-body" id="readerBody"></div>
+  <div class="reader-footer">
+    <button class="btn-next-step" id="nextStepBtn" onclick="nextStep()">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     CHATBOT SCREEN
+═══════════════════════════════════════════════ -->
+<div class="screen" id="chatScreen">
+  <div class="chat-header">
+    <div class="chat-bot-avatar">🤖</div>
+    <div>
+      <div class="chat-bot-name">STEM Bot – Fatuma</div>
+      <div class="chat-bot-status">🟢 Always here to help you learn!</div>
+    </div>
+    <div style="margin-left:auto;cursor:pointer;color:rgba(255,255,255,.7);" onclick="closeChat()">✕</div>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-area">
+    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything about STEM..." rows="1" onkeydown="chatEnter(event)" oninput="autoResize(this)"></textarea>
+    <button class="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MODALS
+═══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal-sheet" id="projectModalSheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="projectModalTitle">Project Steps</div>
+    <div id="projectModalBody"></div>
+    <button class="btn-primary" onclick="closeProjectModal()" style="margin-top:8px;">Done</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="newProjectModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🛠️ Start a New Project</div>
+    <div class="new-project-form">
+      <div><label class="nf-label">Project Title</label><input class="form-input" id="npTitle" placeholder="e.g. Build a Simple Circuit"></div>
+      <div><label class="nf-label">Description</label><textarea class="form-input" id="npDesc" rows="2" placeholder="What will you build or research?"></textarea></div>
+      <div><label class="nf-label">Subject Area</label>
+        <select class="form-input form-select" id="npSubject">
+          <option>Coding</option><option>Robotics</option><option>Electrical Systems</option>
+          <option>Mathematics</option><option>Science</option><option>AgriTech</option><option>First Aid</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-primary orange" style="margin-top:16px;" onclick="createProject()">Create Project 🚀</button>
+    <button class="btn-primary" style="margin-top:8px;background:var(--lightbg);color:var(--navy);" onclick="closeNewProject()">Cancel</button>
+  </div>
+</div>
+
+<!-- API DOCS SCREEN -->
+<div class="screen" id="apiDocs">
+  <div class="api-header">
+    <div class="api-back" onclick="closeApiDocs()">←</div>
+    <h2>API Documentation</h2>
+  </div>
+  <div class="api-body" id="apiBody"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA STORE — localStorage encrypted with base64 wrapper
+// ══════════════════════════════════════════════
+const DB_KEY = 'stemforyou_v1';
+
+function enc(data){ return btoa(unescape(encodeURIComponent(JSON.stringify(data)))); }
+function dec(str){ try{ return JSON.parse(decodeURIComponent(escape(atob(str)))); }catch(e){ return null; } }
+
+function safeGet(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+function safeSet(key,val){ try{ localStorage.setItem(key,val); }catch(e){} }
+function saveDB(){ safeSet(DB_KEY, enc(appState)); }
+function loadDB(){
+  const raw = safeGet(DB_KEY);
+  if(raw){ const d = dec(raw); if(d){ Object.assign(appState, d); } }
+}
+
+let appState = {
+  user: null,
+  xp: 0,
+  streak: 3,
+  completedLessons: [],
+  projects: [],
+  badges: [],
+  subjectProgress: {},
+  chatHistory: [],
+  lastActive: new Date().toDateString(),
+};
+
+// ══════════════════════════════════════════════
+// LESSON DATA
+// ══════════════════════════════════════════════
+const LESSONS = [
+  { id:'c1', subject:'coding', icon:'💻', color:'#1B6EC2', bg:'#E3F2FD',
+    title:'Coding Deep Dive: Build Your First Kenyan Website', level:'Beginner', xp:120, mins:45,
+    steps:[
+      { tag:'Start Here', tagColor:'#1B6EC2', heading:'By the End, You Will Build a Real Web Page',
+        image:{ url:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=70', caption:'Coding turns ideas into websites, apps, games and digital tools.' },
+        body:`This lesson is not just about reading. You will learn how websites work, practise small pieces, answer quizzes, and finish by building a simple <strong>“My Kenya STEM Portfolio”</strong> web page.<br><br>A website is made of three main parts:<br><strong>HTML</strong> — the structure, like the skeleton.<br><strong>CSS</strong> — the design, colours and layout.<br><strong>JavaScript</strong> — the behaviour, clicks and movement.`,
+        kenya:{ title:'Kenyan Example', text:'Think of a school website in Nairobi, a tourism page for Diani, or a small online shop in Kisumu. All of them need structure, design and interaction.' },
+        activity:{ title:'Website Detective', duration:'6 minutes', mode:'Pair or solo', instructions:['Open any school, church, restaurant or creator website you know.','Identify the title, menu, images, buttons and contact section.','Say which parts are HTML structure, which are CSS design, and which are JavaScript behaviour.'], deliverable:'A quick list of 5 things every good website should have.' }
+      },
+      { tag:'Concept', tagColor:'#0D47A1', heading:'HTML: The Building Blocks of a Page',
+        body:`HTML uses tags. A tag tells the browser what something is. A heading uses <strong>&lt;h1&gt;</strong>, a paragraph uses <strong>&lt;p&gt;</strong>, an image uses <strong>&lt;img&gt;</strong>, and a button uses <strong>&lt;button&gt;</strong>.<br><br>Think of HTML like arranging a classroom noticeboard. You decide where the title goes, where the picture goes, and where the instructions go.`,
+        code:`<h1>My Kenya STEM Portfolio</h1>
+<p>Hello! My name is Amina. I am learning how to build websites.</p>
+<button>See My Project</button>`,
+        fact:{ title:'Remember', text:'HTML does not have to look beautiful at first. Its main job is to organise the content clearly.' },
+        quiz:{ q:'Which HTML tag is best for the biggest page title?', opts:['<p>','<h1>','<button>','<img>'], answer:1 }
+      },
+      { tag:'Practice', tagColor:'#FF9800', heading:'Mini Build 1: Your First Page Structure',
+        body:`Now create the skeleton of your portfolio. Use a notebook first if you do not have a laptop. Planning before coding is a real developer skill.`,
+        activity:{ title:'Paper Coding', duration:'8 minutes', mode:'Solo', instructions:['Draw a phone screen on paper.','Add a title: My Kenya STEM Portfolio.','Add three sections: About Me, Skills I Am Learning, My First Project.','Add one button called View Project.'], deliverable:'A paper wireframe of your first website.' },
+        checklist:['My page has a clear title.','My page has at least three sections.','My page has one button or call-to-action.','My page would make sense to another student.']
+      },
+      { tag:'Concept', tagColor:'#1B6EC2', heading:'CSS: Making the Page Look Friendly',
+        body:`CSS controls the look of your page: colour, spacing, fonts, cards, buttons, and layout. A good child-friendly design is simple, colourful, readable and not crowded.<br><br>For your first design, use a Kenyan-inspired theme: deep blue for trust, green for growth, orange for energy, and white space so the page can breathe.`,
+        code:`body {
+  font-family: Arial, sans-serif;
+  background: #eef4fb;
+  color: #1a1a2e;
+}
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 14px;
+}
+button {
+  background: #e87722;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 30px;
+}`,
+        activity:{ title:'Design Critic', duration:'5 minutes', mode:'Group discussion', instructions:['Look around the app screen.','Point out one colour that feels friendly.','Point out one area where spacing makes reading easier.','Suggest one design improvement for younger learners.'], deliverable:'One design rule your group agrees on.' }
+      },
+      { tag:'Quiz Check', tagColor:'#FF9800', heading:'HTML or CSS?',
+        quiz:{ q:'Which one controls the colour and spacing of a website?', opts:['HTML','CSS','A calculator','A battery'], answer:1 },
+        reflection:['Why do you think many beginner websites look confusing?','What makes a website feel trustworthy to a parent or teacher?']
+      },
+      { tag:'Concept', tagColor:'#7B3FE4', heading:'JavaScript: Making the Website Respond',
+        body:`JavaScript makes websites interactive. It can show a message when a button is clicked, check answers in a quiz, update points, or open a menu.<br><br>In this STEM app, the quiz buttons, lesson progress and XP points all need JavaScript logic.`,
+        code:`function showMessage(){
+  alert('Hongera! You clicked the button.');
+}
+
+<button onclick="showMessage()">Click Me</button>`,
+        kenya:{ title:'Where You See This in Kenya', text:'When you check out on an online shop, book a bus ticket, or click Pay with M-Pesa, JavaScript often helps the page respond to your actions.' }
+      },
+      { tag:'Build Lab', tagColor:'#00897B', heading:'Mini Build 2: Make a Button Work',
+        activity:{ title:'Interactive Button Challenge', duration:'10 minutes', mode:'Solo or pair', instructions:['Create a button called “Show My Goal”.','When clicked, it should show one STEM goal, for example: I want to build an app for farmers.','Add a second button called “Hide My Goal”.','Explain to a friend what happens when the button is clicked.'], deliverable:'A working button interaction, or a written explanation if you are offline.' },
+        code:`<p id="goal">My goal will appear here.</p>
+<button onclick="document.getElementById('goal').innerText='I want to build an app for farmers in Kenya.'">Show My Goal</button>
+<button onclick="document.getElementById('goal').innerText='My goal will appear here.'">Hide My Goal</button>`
+      },
+      { tag:'Final Project', tagColor:'#00897B', heading:'Capstone: Build “My Kenya STEM Portfolio”',
+        project:{ title:'Website Project Brief', brief:'Build a one-page portfolio that introduces you, explains one STEM topic you like, and shows one idea you want to build for Kenya.', requirements:['A title and short introduction','At least one Kenyan image or local example','Three cards: About Me, My Skill, My Project Idea','One interactive button using JavaScript','A simple colour theme and readable layout'], extension:'Add a mini quiz with two answer buttons and a score message.' },
+        checklist:['I can explain what HTML does.','I can explain what CSS does.','I can explain what JavaScript does.','I have built or planned a complete one-page website.']
+      },
+      { tag:'Career Link', tagColor:'#7B3FE4', heading:'Where This Skill Can Take You',
+        body:`Once you can build a simple website, you can move toward web development, app development, product design, UI/UX, software engineering and digital entrepreneurship. Start small. Build one page. Then build a landing page. Then build a simple app.`,
+        career:{ careers:['Junior Web Developer','UI/UX Designer','Frontend Engineer','Product Designer','Software Engineer','Digital Entrepreneur'] }
+      }
+    ]
+  },
+  { id:'c2', subject:'coding', icon:'📱', color:'#1B6EC2', bg:'#E3F2FD',
+    title:'App Thinking: Design a Simple Kenyan Problem-Solving App', level:'Beginner+', xp:130, mins:50,
+    steps:[
+      { tag:'Start Here', tagColor:'#1B6EC2', heading:'Apps Start With Problems, Not Code',
+        image:{ url:'https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=900&q=70', caption:'Good apps begin by solving real problems for real people.' },
+        body:`Before writing code, developers ask: <strong>Who has a problem?</strong> <strong>What do they need?</strong> <strong>What should the app help them do?</strong><br><br>For example, a student may need a revision timetable. A farmer may need weather reminders. A parent may need school fee reminders. A boda rider may need a daily income tracker.`,
+        activity:{ title:'Problem Hunt', duration:'7 minutes', mode:'Small groups', instructions:['List 5 problems students, parents, farmers or small businesses face in Kenya.','Choose one problem that a simple app could help with.','Name the user clearly: student, parent, farmer, shopkeeper, teacher.'], deliverable:'One problem statement written in this form: “A ___ needs a way to ___ because ___.”' }
+      },
+      { tag:'Concept', tagColor:'#0D47A1', heading:'The 4 Screens of a Beginner App',
+        body:`Most simple apps can start with four screens:<br><strong>1. Welcome screen</strong> — tells the user what the app does.<br><strong>2. Input screen</strong> — collects information.<br><strong>3. Results screen</strong> — shows the useful answer.<br><strong>4. Help/About screen</strong> — explains how to use it.`,
+        fact:{ title:'Product Thinking', text:'A simple app that solves one clear problem is better than a complicated app that tries to do everything.' },
+        quiz:{ q:'What should an app idea start with?', opts:['A logo','A real problem','A long password','A random colour'], answer:1 }
+      },
+      { tag:'Design Lab', tagColor:'#FF9800', heading:'Sketch Your App Screens',
+        activity:{ title:'Four-Screen Paper Prototype', duration:'12 minutes', mode:'Solo', instructions:['Fold a paper into four boxes.','Draw the Welcome, Input, Result and Help screens.','Add one button on each screen.','Use arrows to show what happens when someone taps each button.'], deliverable:'A paper prototype that another learner can follow.' },
+        checklist:['The app has one clear user.','The app solves one clear problem.','Each screen has one main action.','The buttons are easy to understand.']
+      },
+      { tag:'Logic', tagColor:'#7B3FE4', heading:'Every App Has Logic',
+        body:`Logic means the rules the app follows. A school fee reminder app might say: if the deadline is less than 7 days away, show an urgent reminder. A farm watering app might say: if the soil is dry, tell the farmer to water.`,
+        code:`IF school_fee_deadline_is_close THEN
+  show "Please remind your parent or guardian today."
+ELSE
+  show "You still have time. Keep checking."`,
+        activity:{ title:'Write Your App Rules', duration:'8 minutes', mode:'Pair', instructions:['Write 3 IF/THEN rules for your app.','Check if each rule is clear enough for a computer to follow.','Remove any vague words like “soon” unless you define them.'], deliverable:'Three IF/THEN rules.' }
+      },
+      { tag:'Mini Code', tagColor:'#00897B', heading:'Build a Tiny App Interaction',
+        body:`Here is a tiny JavaScript app idea. It asks for a county and gives a simple message. You can change it into your own idea.`,
+        code:`<input id="county" placeholder="Enter your county">
+<button onclick="checkCounty()">Get Message</button>
+<p id="message"></p>
+<script>
+function checkCounty(){
+  const county = document.getElementById('county').value;
+  document.getElementById('message').innerText =
+    'Hello ' + county + '! What problem can technology solve there?';
+}
+<\/script>`,
+        quiz:{ q:'In an app, what is input?', opts:['Information the user gives','The phone battery','The app logo','A picture only'], answer:0 }
+      },
+      { tag:'Final Project', tagColor:'#00897B', heading:'Capstone: Design and Demo Your First App',
+        project:{ title:'Simple App Project Brief', brief:'Design a simple app for a Kenyan learner, farmer, parent, small shop or community group. You can code a tiny prototype or present a paper prototype.', requirements:['Problem statement','Target user','Four screen sketches','Three IF/THEN rules','One working HTML/JavaScript interaction or a clear demo script'], extension:'Turn the prototype into a working web app using HTML, CSS and JavaScript.' },
+        reflection:['What problem did you choose and why does it matter?','Who would use your app first?','What is the simplest version you can build in one day?']
+      }
+    ]
+  },
+  { id:'r1', subject:'robotics', icon:'🤖', color:'#7B3FE4', bg:'#EDE7F6',
+    title:'Robotics Deep Dive: Build a Robot Mindset', level:'Beginner', xp:110, mins:45,
+    steps:[
+      { tag:'Start Here', tagColor:'#7B3FE4', heading:'A Robot Senses, Thinks and Acts',
+        image:{ url:'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=70', caption:'Robotics combines mechanics, electronics, coding and problem-solving.' },
+        body:`A robot is a machine that can be programmed to do a task. Every robot has three big jobs: <strong>sense</strong> the world, <strong>think</strong> using instructions, and <strong>act</strong> using motors or movement.`,
+        kenya:{ title:'Kenyan Example', text:'A robot in a Kenyan greenhouse could sense dry soil, think “this crop needs water”, then switch on a small pump.' },
+        activity:{ title:'Human Robot Game', duration:'8 minutes', mode:'Group', instructions:['One learner acts as a robot.','Another learner gives exact instructions to move from the door to a chair.','The robot must only do exactly what is said.','Discuss why precise instructions matter.'], deliverable:'Three rules for giving better robot instructions.' }
+      },
+      { tag:'Parts', tagColor:'#5E1DB3', heading:'The Robot Body: Controller, Sensors, Actuators',
+        body:`The <strong>controller</strong> is the brain. The <strong>sensors</strong> are the senses. The <strong>actuators</strong> are the muscles. A battery provides power, and the frame holds everything together.`,
+        checklist:['Controller: Arduino, micro:bit or Raspberry Pi','Sensor: distance, light, soil, heat or camera','Actuator: motor, buzzer, LED, servo or pump','Power: battery, solar panel or adapter'],
+        quiz:{ q:'Which part helps a robot detect the world around it?', opts:['Sensor','Wheel only','Screwdriver','Paint'], answer:0 }
+      },
+      { tag:'Design Lab', tagColor:'#FF9800', heading:'Design a Classroom Helper Robot',
+        activity:{ title:'Robot Blueprint', duration:'12 minutes', mode:'Pair', instructions:['Choose a simple classroom problem: collecting books, reminding students, sorting papers.','Draw the robot.','Label its controller, sensors, actuators and power source.','Write the steps it follows.'], deliverable:'A labelled robot design.' },
+        code:`START
+IF book_is_on_table THEN
+  move_forward
+  pick_book
+  place_book_in_box
+ELSE
+  wait
+END`,
+        reflection:['What task is too difficult for your first robot?','How can you make the robot idea simpler?']
+      },
+      { tag:'Project', tagColor:'#00897B', heading:'Capstone: Build or Simulate a Line-Following Robot',
+        project:{ title:'Robotics Project Brief', brief:'Design a robot that follows a black line on white paper. If materials are available, build it with sensors. If not, simulate the logic on paper.', requirements:['Draw the robot body','Explain how the sensor sees the line','Write the movement rules','Show what happens when the robot loses the line','Present your robot to another learner'], extension:'Build it with Arduino, two motors and infrared sensors.' },
+        career:{ careers:['Robotics Engineer','Mechatronics Technician','Automation Engineer','Drone Technician','Agricultural Robotics Designer'] }
+      }
+    ]
+  },
+  { id:'m1', subject:'maths', icon:'📐', color:'#E87722', bg:'#FFF3E0',
+    title:'Maths Deep Dive: Algebra for Real Kenyan Problems', level:'Beginner', xp:100, mins:40,
+    steps:[
+      { tag:'Start Here', tagColor:'#E87722', heading:'Algebra Helps You Find the Unknown',
+        image:{ url:'https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?auto=format&fit=crop&w=900&q=70', caption:'Algebra is a problem-solving language used in business, engineering and science.' },
+        body:`Algebra uses letters to stand for unknown values. In real life, the unknown could be the price of one mango, the number of litres of fuel, or the amount of cement needed for a job.`,
+        kenya:{ title:'Market Example', text:'If 5 bags of maize cost KES 2,500, algebra helps you find the cost of 1 bag: 5x = 2,500, so x = 500.' },
+        activity:{ title:'Market Maths', duration:'7 minutes', mode:'Pair', instructions:['Create a market problem using bananas, tomatoes or maize.','Use x for the unknown price.','Swap your problem with a friend and solve theirs.'], deliverable:'One solved equation from a Kenyan market example.' }
+      },
+      { tag:'Method', tagColor:'#c96a18', heading:'How to Solve Equations Without Panic',
+        body:`Treat an equation like a balanced scale. Whatever you do to one side, do the same to the other side. Your goal is to leave the unknown alone.`,
+        code:`3x + 6 = 21
+3x = 21 - 6
+3x = 15
+x = 15 ÷ 3
+x = 5`,
+        quiz:{ q:'Solve 2x + 4 = 14. What is x?', opts:['3','4','5','7'], answer:2 }
+      },
+      { tag:'Practice', tagColor:'#FF9800', heading:'Equation Relay',
+        activity:{ title:'Equation Relay', duration:'10 minutes', mode:'Group', instructions:['One learner writes the first step of solving an equation.','The next learner writes the next step.','Continue until x is found.','Check if each step keeps the equation balanced.'], deliverable:'A fully solved equation with every step shown.' },
+        checklist:['I can identify the unknown.','I can move numbers carefully.','I can divide to isolate x.','I can check my answer by substituting it back.']
+      },
+      { tag:'Project', tagColor:'#00897B', heading:'Capstone: Budget a Small School Event',
+        project:{ title:'Maths Project Brief', brief:'Use algebra to plan a simple school event budget.', requirements:['Choose an event: debate, STEM club, class party or charity day','List fixed costs such as venue or printing','Use x for cost per student','Create an equation for the total budget','Solve the equation and explain the answer'], extension:'Create a simple table showing how the cost changes if 20, 30 or 50 students attend.' },
+        career:{ careers:['Engineer','Actuary','Data Analyst','Accountant','Architect','Quantity Surveyor'] }
+      }
+    ]
+  },
+  { id:'s1', subject:'science', icon:'🔬', color:'#2E7D32', bg:'#E8F5E9',
+    title:'Science Deep Dive: Cells, Health and Life', level:'Beginner', xp:100, mins:40,
+    steps:[
+      { tag:'Start Here', tagColor:'#2E7D32', heading:'Cells Are Tiny Living Factories',
+        image:{ url:'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=900&q=70', caption:'Biology helps us understand health, plants, animals and the human body.' },
+        body:`Every living thing is made of cells. A cell is like a tiny factory with departments. The nucleus controls, the mitochondria produce energy, and the membrane controls what enters and leaves.`,
+        kenya:{ title:'Health Connection', text:'Scientists at Kenyan research institutions study cells to understand diseases such as malaria, tuberculosis and HIV.' },
+        activity:{ title:'Cell as a Kenyan Town', duration:'8 minutes', mode:'Group', instructions:['Compare a cell to a town.','Choose what the nucleus, membrane and mitochondria would be in that town.','Explain your analogy to the class.'], deliverable:'A cell-town comparison with at least 4 parts.' }
+      },
+      { tag:'Core Ideas', tagColor:'#1B5E20', heading:'Animal Cells and Plant Cells',
+        body:`Plant cells have a cell wall and chloroplasts. Animal cells do not. Chloroplasts help plants make food using sunlight. That is why plants are the base of many food chains.`,
+        quiz:{ q:'Which cell part is called the powerhouse?', opts:['Nucleus','Mitochondria','Cell wall','Chloroplast'], answer:1 },
+        checklist:['I can name three cell parts.','I can explain the job of the nucleus.','I can compare plant and animal cells.','I can explain why cells matter in health.']
+      },
+      { tag:'Project', tagColor:'#00897B', heading:'Capstone: Create a Cell Museum Exhibit',
+        project:{ title:'Science Project Brief', brief:'Create a mini museum exhibit explaining the cell to younger learners.', requirements:['Draw or model a cell','Label at least 6 parts','Use a Kenyan analogy such as a town, school or farm','Add a 5-question quiz for visitors','Present in 3 minutes'], extension:'Create a digital poster or simple web page explaining your cell.' },
+        career:{ careers:['Doctor','Nurse','Biotechnologist','Research Scientist','Pharmacist','Public Health Officer'] }
+      }
+    ]
+  },
+  { id:'e1', subject:'electrical', icon:'⚡', color:'#F5A000', bg:'#FFFDE7',
+    title:'Electrical Deep Dive: Circuits and Safe Power', level:'Beginner', xp:110, mins:45,
+    steps:[
+      { tag:'Start Here', tagColor:'#F5A000', heading:'Electricity Must Have a Complete Path',
+        image:{ url:'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=900&q=70', caption:'Electrical knowledge powers homes, schools, hospitals and industries.' },
+        body:`A circuit is a complete path for electricity to flow. If the path is broken, the light goes off. If the circuit is poorly designed, it can become dangerous.`,
+        kenya:{ title:'Kenya Energy Link', text:'Kenya uses geothermal, hydro, wind and solar power. Understanding circuits helps learners connect to energy, engineering and TVET careers.' },
+        activity:{ title:'Human Circuit', duration:'7 minutes', mode:'Group', instructions:['Stand in a circle.','One learner is the battery, one is the switch, one is the bulb.','Pass a clap around the circle to represent current.','When the switch opens, the clap must stop.'], deliverable:'A simple explanation of why a circuit must be closed.' }
+      },
+      { tag:'Ohm’s Law', tagColor:'#E65100', heading:'Voltage, Current and Resistance',
+        body:`Voltage pushes current. Current is the flow. Resistance slows the flow. The formula is <strong>V = I × R</strong>.`,
+        code:`If V = 12 volts and R = 4 ohms:
+I = V ÷ R
+I = 12 ÷ 4
+I = 3 amps`,
+        quiz:{ q:'If V = 12V and R = 4Ω, what is current?', opts:['2A','3A','4A','48A'], answer:1 }
+      },
+      { tag:'Safety', tagColor:'#D32F2F', heading:'Electricity Safety Rules',
+        checklist:['Never touch bare wires.','Do not overload sockets.','Keep water away from electricity.','Use the correct fuse or breaker.','Ask a qualified adult before building real circuits.'],
+        activity:{ title:'Safety Spotter', duration:'6 minutes', mode:'Solo', instructions:['List 5 electrical safety risks you have seen at home or school.','Choose one risk and explain how to reduce it.'], deliverable:'One safety improvement idea.' }
+      },
+      { tag:'Project', tagColor:'#00897B', heading:'Capstone: Design a Safe LED Torch Circuit',
+        project:{ title:'Electrical Project Brief', brief:'Design a simple battery-powered LED torch circuit.', requirements:['Draw a circuit with battery, switch, resistor and LED','Label positive and negative connections','Explain the role of the resistor','Calculate current using Ohm’s Law','Write three safety precautions'], extension:'Build the circuit physically with adult supervision.' },
+        career:{ careers:['Electrical Engineer','Solar Technician','Electronics Technician','Automation Engineer','Renewable Energy Consultant'] }
+      }
+    ]
+  },
+  { id:'a1', subject:'agritech', icon:'🌾', color:'#00897B', bg:'#E0F2F1',
+    title:'AgriTech Deep Dive: Smart Farming for Kenyan Shambas', level:'Beginner', xp:110, mins:45,
+    steps:[
+      { tag:'Start Here', tagColor:'#00897B', heading:'Farming Is Becoming a Technology Career',
+        image:{ url:'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=70', caption:'AgriTech uses sensors, data, drones and mobile tools to improve farming.' },
+        body:`AgriTech means using technology to help farmers grow more food, waste less water, access markets and make better decisions.`,
+        kenya:{ title:'Local Relevance', text:'A farmer in Makueni, Kisumu or Eldoret can use weather data, soil sensors and mobile market prices to make smarter choices.' },
+        activity:{ title:'Farm Problem Map', duration:'8 minutes', mode:'Group', instructions:['List problems a farmer faces: water, pests, prices, transport, soil quality.','Choose one problem.','Suggest one technology that could help.'], deliverable:'A problem-solution map.' }
+      },
+      { tag:'Sensors', tagColor:'#00695C', heading:'Soil Moisture Sensors',
+        body:`A soil moisture sensor checks how wet or dry soil is. The system can tell a farmer when to water, instead of guessing.`,
+        code:`IF soil_moisture < 30% THEN
+  send_sms("Your maize needs water today")
+ELSE
+  send_sms("Soil moisture is okay")`,
+        quiz:{ q:'Which tool helps know if soil is dry?', opts:['Soil moisture sensor','Torch','Keyboard','Speaker'], answer:0 }
+      },
+      { tag:'Project', tagColor:'#00897B', heading:'Capstone: Design a Smart Irrigation System',
+        project:{ title:'AgriTech Project Brief', brief:'Design a smart irrigation system for a small Kenyan shamba.', requirements:['Draw the farm layout','Mark where sensors will go','Write IF/THEN watering rules','Estimate basic materials needed','Explain how the system saves water'], extension:'Create a simple app screen that shows soil status: Dry, Okay, Wet.' },
+        career:{ careers:['Agricultural Engineer','Drone Agronomist','IoT Engineer','Food Technologist','Climate-Smart Farming Advisor'] }
+      }
+    ]
+  },
+  { id:'f1', subject:'firstaid', icon:'🩺', color:'#D32F2F', bg:'#FFEBEE',
+    title:'First Aid Deep Dive: Responding Calmly in Emergencies', level:'Beginner', xp:100, mins:40,
+    steps:[
+      { tag:'Start Here', tagColor:'#D32F2F', heading:'First Aid Starts With Calm Thinking',
+        image:{ url:'https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=70', caption:'First aid teaches learners how to respond calmly and responsibly.' },
+        body:`First aid is the immediate care given before professional help arrives. The first rule is: do not become another victim. Check danger first, then call for help.`,
+        activity:{ title:'Emergency Roleplay', duration:'8 minutes', mode:'Group', instructions:['Act out a safe school emergency scenario such as a fainting learner.','One person checks danger.','One calls an adult.','One keeps the area clear.'], deliverable:'A simple emergency response script.' }
+      },
+      { tag:'Framework', tagColor:'#B71C1C', heading:'D-R-A-B-C',
+        body:`Use D-R-A-B-C: <strong>Danger</strong>, <strong>Response</strong>, <strong>Airway</strong>, <strong>Breathing</strong>, <strong>Circulation/CPR</strong>. This helps you remember the order under pressure.`,
+        quiz:{ q:'What comes first in D-R-A-B-C?', opts:['Danger','Breathing','CPR','Water'], answer:0 },
+        checklist:['Check if the place is safe.','Call an adult or emergency help.','Do not move someone unless they are in danger.','Stay calm and speak clearly.']
+      },
+      { tag:'Project', tagColor:'#00897B', heading:'Capstone: Create a School First Aid Awareness Poster',
+        project:{ title:'First Aid Project Brief', brief:'Create a child-friendly first aid poster for your classroom or home.', requirements:['Explain D-R-A-B-C','Show three emergency numbers or trusted adults to contact','Use simple drawings','Add “Do not panic” and “Call for help” messages','Present it to younger learners'], extension:'Turn the poster into a short 60-second awareness video.' },
+        career:{ careers:['Doctor','Nurse','Paramedic','Clinical Officer','Public Health Officer','Kenya Red Cross Volunteer'] }
+      }
+    ]
+  },
+  { id:'b1', subject:'biotech', icon:'🧬', color:'#E91E8C', bg:'#FCE4EC',
+    title:'Biotech Deep Dive: Using Biology to Solve Problems', level:'Intermediate', xp:115, mins:45,
+    steps:[
+      { tag:'Start Here', tagColor:'#E91E8C', heading:'Biotechnology Is Biology Plus Innovation',
+        image:{ url:'https://images.unsplash.com/photo-1581093458791-9d15482442f6?auto=format&fit=crop&w=900&q=70', caption:'Biotechnology applies biology to medicine, farming, food and the environment.' },
+        body:`Biotechnology uses living things, cells or biological processes to create useful products. It can help with vaccines, disease testing, improved crops, food preservation and environmental protection.`,
+        kenya:{ title:'Kenyan Relevance', text:'Biotech skills can support disease research, seed improvement, food safety and conservation work across Kenya.' },
+        activity:{ title:'Biotech Sorting Game', duration:'7 minutes', mode:'Group', instructions:['Sort these into medicine, farming, food or environment: vaccine, yoghurt, drought-resistant maize, water testing, DNA test.','Explain why each belongs there.'], deliverable:'A sorted biotech example table.' }
+      },
+      { tag:'DNA', tagColor:'#AD1457', heading:'DNA Is the Instruction Book',
+        body:`DNA carries instructions for living things. Scientists can study DNA to understand disease, inheritance, crop traits and biodiversity.`,
+        quiz:{ q:'What does DNA carry?', opts:['Electrical current','Genetic instructions','Soil only','Water pressure'], answer:1 },
+        reflection:['What good things can biotech do for society?','What rules should scientists follow when using powerful biological tools?']
+      },
+      { tag:'Project', tagColor:'#00897B', heading:'Capstone: Design a Biotech Solution Poster',
+        project:{ title:'Biotech Project Brief', brief:'Choose one Kenyan challenge and design a biotech solution poster.', requirements:['Choose a challenge: disease, crop loss, food spoilage or water safety','Explain the biological idea behind the solution','Show who benefits','Add one ethical concern','Present your idea in 3 minutes'], extension:'Create a mock lab report with aim, materials, method, results and conclusion.' },
+        career:{ careers:['Biotechnologist','Lab Scientist','Geneticist','Food Safety Analyst','Medical Researcher','Environmental Scientist'] }
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// SUBJECTS FOR EXPLORE
+// ══════════════════════════════════════════════
+const SUBJECTS = [
+  { id:'coding', name:'Computer Science & Coding', emoji:'💻', color:'#1B6EC2', bg:'#E3F2FD', count:8, tag:'Popular' },
+  { id:'robotics', name:'Robotics & Engineering', emoji:'🤖', color:'#7B3FE4', bg:'#EDE7F6', count:6, tag:'Trending' },
+  { id:'maths', name:'Mathematics', emoji:'📐', color:'#E87722', bg:'#FFF3E0', count:7, tag:'KCSE' },
+  { id:'science', name:'Science & Biology', emoji:'🔬', color:'#2E7D32', bg:'#E8F5E9', count:7, tag:'Core' },
+  { id:'firstaid', name:'First Aid & Medicine', emoji:'🩺', color:'#D32F2F', bg:'#FFEBEE', count:4, tag:'Life Skill' },
+  { id:'electrical', name:'Electrical Systems', emoji:'⚡', color:'#F5A000', bg:'#FFFDE7', count:5, tag:'TVET' },
+  { id:'agritech', name:'Agriculture Technology', emoji:'🌾', color:'#00897B', bg:'#E0F2F1', count:5, tag:'Kenya Focus' },
+  { id:'biotech', name:'Biotechnology', emoji:'🧬', color:'#E91E8C', bg:'#FCE4EC', count:4, tag:'Future' },
+];
+
+// ══════════════════════════════════════════════
+// CAREER PATHS
+// ══════════════════════════════════════════════
+const CAREERS = [
+  { icon:'💻', name:'Software Engineer', desc:'Build apps, websites, and systems used by millions of Kenyans', salary:'KES 80K–300K/month', color:'#E3F2FD', colorText:'#0D47A1' },
+  { icon:'🏥', name:'Medical Doctor', desc:'Diagnose and treat illness at hospitals like KNH, MP Shah, Aga Khan', salary:'KES 100K–400K/month', color:'#FFEBEE', colorText:'#B71C1C' },
+  { icon:'🌾', name:'Agricultural Engineer', desc:'Develop technology to feed Kenya\'s 54 million people sustainably', salary:'KES 60K–180K/month', color:'#E0F2F1', colorText:'#004D40' },
+  { icon:'⚡', name:'Electrical Engineer', desc:'Design power systems, solar farms, and smart grids for Kenya', salary:'KES 80K–250K/month', color:'#FFFDE7', colorText:'#E65100' },
+  { icon:'📊', name:'Data Scientist', desc:'Analyse huge datasets to guide decisions at banks, hospitals, and government', salary:'KES 100K–350K/month', color:'#EDE7F6', colorText:'#4A148C' },
+  { icon:'🤖', name:'Robotics Engineer', desc:'Design robots for manufacturing, farming, and healthcare in Kenya', salary:'KES 90K–300K/month', color:'#E8EAF6', colorText:'#1A237E' },
+  { icon:'✈️', name:'Aerospace Engineer', desc:'Work with Kenya Space Agency on satellite and rocket technology', salary:'KES 120K–400K/month', color:'#E8F5E9', colorText:'#1B5E20' },
+  { icon:'🧬', name:'Biotechnologist', desc:'Develop vaccines, crop varieties, and medicines at KEMRI, KALRO', salary:'KES 80K–250K/month', color:'#FCE4EC', colorText:'#880E4F' },
+];
+
+// ══════════════════════════════════════════════
+// PROJECTS TEMPLATES
+// ══════════════════════════════════════════════
+const PROJECT_TEMPLATES = [
+  {
+    id:'pt1', title:'Build My Kenya STEM Portfolio Website', subject:'Coding',
+    desc:'Create a one-page website with HTML, CSS and a small JavaScript interaction.',
+    status:'todo', progress:0,
+    steps:[
+      'Sketch the page on paper: title, image, three cards and one button',
+      'Write the HTML structure: h1, p, section, button and image',
+      'Add CSS colours, spacing, cards and rounded buttons',
+      'Add JavaScript so one button changes a message on the page',
+      'Add one Kenyan example or local problem you care about',
+      'Test the page on a phone-sized screen',
+      'Present your website and explain HTML, CSS and JavaScript roles'
+    ],
+    tags:['Coding','Website','Capstone'],
+  },
+  {
+    id:'pt2', title:'Design a Simple Problem-Solving App', subject:'Coding',
+    desc:'Design a four-screen app that solves a real problem for a Kenyan learner, farmer, parent or shopkeeper.',
+    status:'todo', progress:0,
+    steps:[
+      'Choose one clear user and one clear problem',
+      'Write a problem statement using: A ___ needs a way to ___ because ___',
+      'Sketch four screens: Welcome, Input, Result and Help',
+      'Write three IF/THEN logic rules for the app',
+      'Create a tiny HTML/JavaScript prototype or paper demo',
+      'Let another learner test the idea and give feedback',
+      'Improve the app based on feedback'
+    ],
+    tags:['App Design','Logic','Prototype'],
+  },
+  {
+    id:'pt3', title:'Build a Safe LED Torch Circuit', subject:'Electrical Systems',
+    desc:'Design or build a simple battery-powered LED torch circuit while learning safety and Ohm’s Law.',
+    status:'todo', progress:0,
+    steps:[
+      'Draw the circuit with battery, switch, resistor and LED',
+      'Label positive and negative connections',
+      'Explain why the resistor protects the LED',
+      'Calculate current using Ohm’s Law',
+      'List three safety rules before building',
+      'Build only with safe low-voltage materials and adult supervision',
+      'Write what worked, what failed and what you changed'
+    ],
+    tags:['Electrical','Hands-On','Safety'],
+  },
+  {
+    id:'pt4', title:'Design a Smart Irrigation System', subject:'AgriTech',
+    desc:'Design a sensor-based watering system for a small Kenyan shamba.',
+    status:'todo', progress:0,
+    steps:[
+      'Choose a crop and county context',
+      'Draw the farm layout and mark sensor positions',
+      'Write IF/THEN watering rules',
+      'List materials: sensor, controller, pump, pipes, solar or battery',
+      'Explain how the system saves water and labour',
+      'Design a simple app screen showing soil status',
+      'Present your design to a parent, teacher or classmate'
+    ],
+    tags:['AgriTech','Sensors','Kenya Focus'],
+  },
+  {
+    id:'pt5', title:'Create a Cell Museum Exhibit', subject:'Science',
+    desc:'Teach younger learners about cells using a model, poster or web page.',
+    status:'todo', progress:0,
+    steps:[
+      'Choose plant cell or animal cell',
+      'Draw or model the cell with at least six labelled parts',
+      'Create a Kenyan analogy, like a school, town or farm',
+      'Write a 5-question visitor quiz',
+      'Prepare a 3-minute explanation',
+      'Let someone try the quiz',
+      'Improve your exhibit based on their questions'
+    ],
+    tags:['Science','Biology','Teaching'],
+  }
+];
+
+// ══════════════════════════════════════════════
+// BADGES
+// ══════════════════════════════════════════════
+const ALL_BADGES = [
+  { id:'first_lesson', icon:'⭐', name:'First Step', desc:'Complete your first lesson', earned:false },
+  { id:'coder', icon:'💻', name:'Young Coder', desc:'Complete 2 coding lessons', earned:false },
+  { id:'explorer', icon:'🔭', name:'STEM Explorer', desc:'Try 3 different subjects', earned:false },
+  { id:'quiz_master', icon:'🎯', name:'Quiz Master', desc:'Answer 5 quiz questions correctly', earned:false },
+  { id:'project_starter', icon:'🛠️', name:'Builder', desc:'Start your first project', earned:false },
+  { id:'streak_3', icon:'🔥', name:'On Fire!', desc:'Maintain a 3-day streak', earned:false },
+  { id:'xp_100', icon:'⚡', name:'Power Up', desc:'Earn 100 XP', earned:false },
+  { id:'kenya_pride', icon:'🇰🇪', name:'Kenya Pride', desc:'Complete a Kenya-focused lesson', earned:false },
+  { id:'science_star', icon:'🔬', name:'Science Star', desc:'Complete 2 science lessons', earned:false },
+];
+
+// ══════════════════════════════════════════════
+// CHATBOT BRAIN
+// ══════════════════════════════════════════════
+const BOT_NAME = 'Fatuma';
+let currentLesson = null;
+let currentStep = 0;
+let quizAnswered = false;
+
+const BOT_RESPONSES = {
+  greet: [
+    `Habari! 👋 Mimi ni ${BOT_NAME}, msaidizi wako wa STEM! I can help you learn about coding, robotics, maths, science, first aid, and so much more. What would you like to explore today?`,
+    `Hello! I'm ${BOT_NAME}, your personal STEM guide! 🌟 Ask me anything about science, technology, engineering, mathematics — or careers in Kenya. What are you curious about?`
+  ],
+  coding: `💻 **Coding in Kenya!**\n\nCoding means giving step-by-step instructions to a computer. The most popular languages for beginners are:\n\n• **Python** — Used by KEMRI scientists and Safaricom engineers\n• **JavaScript** — Powers every Kenyan website\n• **Scratch** — Great for absolute beginners!\n\nM-Pesa, eCitizen, and the SGR ticketing system were all built with code! Would you like to start a coding lesson? 🚀`,
+  robotics: `🤖 **Robotics is the Future of Kenya!**\n\nRobots combine electronics, programming, and mechanical engineering. Kenyan universities like JKUAT and Strathmore now have robotics labs!\n\nKey things to know:\n• Every robot has a **brain** (controller), **senses** (sensors), and **muscles** (actuators)\n• Arduino boards cost only KES 800–1,500 and you can build amazing things!\n• STEM clubs in Kenyan schools are building robots that plant trees and sort rubbish\n\nReady to learn robotics? Click the Robotics lesson! 🤖`,
+  maths: `📐 **Mathematics — The Language of the Universe!**\n\nMaths is used in every STEM field. Strong maths skills can get you:\n• A place at UoN, JKUAT, or Strathmore University\n• A career as an engineer, actuary, or data scientist earning KES 150K+/month!\n\n**Tips for KCSE success:**\n• Practice algebra daily — it's in both Paper 1 and Paper 2\n• Understand statistics — 20+ marks in KCSE depend on it\n• Form study groups — teaching others strengthens YOUR understanding\n\nWould you like help with a specific maths topic? 💪`,
+  firstaid: `🩺 **First Aid — Be Ready to Save a Life!**\n\nIn Kenya, first aid knowledge is crucial because:\n• Kenya has ~3,000 road accident deaths per year\n• Ambulance response in rural areas can take 30+ minutes\n• YOU could save a classmate, family member, or stranger\n\nThe KEY first aid steps (D-R-A-B-C):\n• **D**anger — check for danger first\n• **R**esponse — is the person conscious?\n• **A**irway — open it up\n• **B**reathing — are they breathing?\n• **C**PR — 30 compressions, 2 breaths\n\nThe Kenya Red Cross offers free first aid training in every county! 🏥`,
+  electrical: `⚡ **Electrical Engineering — Powering Kenya's Future!**\n\nKenya has one of Africa's most impressive power systems:\n• **75%+ renewable energy** (hydro, geothermal, solar, wind)\n• **Olkaria Geothermal** is Africa's largest geothermal plant!\n• Solar energy is growing rapidly in rural Kenya\n\n**Key formula — Ohm's Law:** V = I × R\n(Voltage = Current × Resistance)\n\nKPLC (Kenya Power) employs thousands of electrical engineers. The pay starts at KES 80,000/month! 💡`,
+  agritech: `🌾 **AgriTech — Feeding Kenya Smarter!**\n\nAgriculture employs 40% of Kenyans, but technology is making it even more powerful:\n\n• **Twiga Foods** uses AI to connect farmers with urban markets\n• **Apollo Agriculture** gives crop advice via SMS to rural farmers\n• **DigiFarm** (Safaricom) provides inputs, credit, and advice to 400,000 farmers\n\nDrones can survey 200 acres per day! Soil sensors tell farmers exactly when and where to water.\n\nAgriTech engineers earn KES 60K–180K/month. Kenya needs 50,000 more agricultural technologists! 🌱`,
+  career: `🎯 **Top STEM Careers in Kenya!**\n\nHere are Kenya's highest-paying STEM careers:\n\n🥇 **Doctor/Specialist** — KES 100K–500K/month\n🥈 **Software Engineer** — KES 80K–300K/month\n🥉 **Data Scientist** — KES 100K–350K/month\n🏅 **Electrical Engineer** — KES 80K–250K/month\n🏅 **Actuary** — KES 150K–400K/month\n🏅 **Biotechnologist** — KES 80K–250K/month\n\nAll of these start with what you're learning RIGHT NOW in STEM!\n\nWhich career interests you most? 🚀`,
+  university: `🎓 **Universities Offering STEM in Kenya!**\n\nTop choices for STEM degrees:\n\n🏫 **University of Nairobi (UoN)** — Engineering, Medicine, Computer Science\n🏫 **JKUAT** — Engineering, IT, Biotechnology\n🏫 **Strathmore University** — Data Science, IT, Business Technology\n🏫 **Technical University of Kenya (TUK)** — Applied Sciences, Engineering\n🏫 **Kenyatta University** — Science Education, Environmental Science\n\n**Entry via KCSE:**\n• Medicine: B+ overall, B+ in Sciences\n• Engineering: B+ overall, B in Maths & Physics\n• Computer Science: B overall\n\n**Scholarships available:** Government scholarships, HELB loans, and private bursaries cover most costs! 📚`,
+  default: [
+    `That's a great question! 🌟 I'm still learning new things every day. Try asking me about: **coding, robotics, maths, first aid, electrical systems, agritech, careers in Kenya,** or **which university to join for STEM!**`,
+    `Interesting! 🤔 I'm not sure about that specific topic yet, but I can help you with STEM subjects, Kenya's tech industry, career guidance, and your lessons on this app. What would you like to explore?`,
+    `Hmm, let me think... 🧠 I'm your STEM guide! Ask me about any science, tech, engineering, or maths topic — especially ones related to Kenya. Or ask: "What career should I choose?" 🚀`
+  ]
+};
+
+function getBotResponse(msg) {
+  const m = msg.toLowerCase();
+  if(m.includes('hello')||m.includes('habari')||m.includes('hi ')||m===('hi')||m.includes('hujambo')) return BOT_RESPONSES.greet[Math.floor(Math.random()*2)];
+  if(m.includes('cod')||m.includes('program')||m.includes('python')||m.includes('javascript')) return BOT_RESPONSES.coding;
+  if(m.includes('robot')||m.includes('arduino')||m.includes('mechatronics')) return BOT_RESPONSES.robotics;
+  if(m.includes('math')||m.includes('algebra')||m.includes('calculus')||m.includes('statistic')) return BOT_RESPONSES.maths;
+  if(m.includes('first aid')||m.includes('cpr')||m.includes('medical')||m.includes('doctor')||m.includes('hospital')) return BOT_RESPONSES.firstaid;
+  if(m.includes('electr')||m.includes('circuit')||m.includes('voltage')||m.includes('kplc')) return BOT_RESPONSES.electrical;
+  if(m.includes('agri')||m.includes('farm')||m.includes('maize')||m.includes('crop')||m.includes('twiga')) return BOT_RESPONSES.agritech;
+  if(m.includes('career')||m.includes('job')||m.includes('salary')||m.includes('earn')||m.includes('work')) return BOT_RESPONSES.career;
+  if(m.includes('university')||m.includes('college')||m.includes('kcse')||m.includes('uon')||m.includes('jkuat')) return BOT_RESPONSES.university;
+  if(m.includes('biotech')||m.includes('kemri')||m.includes('vaccine')||m.includes('gene')) return `🧬 **Biotechnology in Kenya!**\n\nKEMRI is Kenya's premier medical research institute, employing hundreds of biotechnologists to fight malaria, HIV, and other diseases.\n\nKALRO develops drought-resistant crops to help farmers survive climate change.\n\nBiotechnology degrees are offered at UoN, JKUAT, and Kenyatta University. Entry requirement: B in Biology and Chemistry at KCSE.`;
+  return BOT_RESPONSES.default[Math.floor(Math.random()*BOT_RESPONSES.default.length)];
+}
+
+// ══════════════════════════════════════════════
+// ONBOARDING
+// ══════════════════════════════════════════════
+const OB_SLIDES = [
+  { emoji:'🚀', title:'Learn STEM Your Way', desc:'Explore robotics, coding, maths, science, first aid and more — designed specially for Kenyan students aged 10–18.' },
+  { emoji:'🤖', title:'Chat with STEM Bot Fatuma', desc:'Our AI assistant Fatuma answers your questions, explains concepts, and guides you to the right career path.' },
+  { emoji:'🏆', title:'Earn XP & Badges', desc:'Complete lessons, finish projects, and track your growth — every step forward earns you points and achievements!' },
+];
+let obSlide = 0;
+
+function nextSlide(){
+  obSlide++;
+  if(obSlide >= OB_SLIDES.length){ gotoAuth(); return; }
+  const s = OB_SLIDES[obSlide];
+  document.getElementById('obEmoji').textContent = s.emoji;
+  document.getElementById('obTitle').textContent = s.title;
+  document.getElementById('obDesc').textContent = s.desc;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===obSlide));
+  if(obSlide===OB_SLIDES.length-1) document.getElementById('obNextBtn').textContent = "Get Started 🌟";
+}
+
+// ══════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════
+function switchAuthTab(tab){
+  document.getElementById('loginTab').classList.toggle('active',tab==='login');
+  document.getElementById('signupTab').classList.toggle('active',tab==='signup');
+  document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');
+  document.getElementById('signupForm').classList.toggle('hidden',tab!=='signup');
+}
+
+function doLogin(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  if(!email||!pass){ showToast('Please fill in all fields','error'); return; }
+  // Load from storage or create demo
+  const saved = localStorage.getItem('stemforyou_users');
+  if(saved){
+    const users = JSON.parse(saved);
+    const u = users.find(u=>u.email===email);
+    if(u&&u.pass===btoa(pass)){
+      appState.user = u;
+      loadDB();
+      initApp();
+      return;
+    }
+  }
+  showToast('Email or password incorrect','error');
+}
+
+function guestLogin(){
+  appState.user = { name:'Demo Student', firstName:'Demo', lastName:'Student', email:'demo@stemforyou.co.ke', school:'Nairobi', grade:'Form 2', avatar:'D' };
+  appState.projects = PROJECT_TEMPLATES.map(p=>({...p}));
+  appState.badges = ALL_BADGES.map(b=>({...b}));
+  appState.badges[5].earned = true; // streak badge (3-day)
+  initApp();
+}
+
+function doSignup(){
+  const first = document.getElementById('sfFirst').value.trim();
+  const last = document.getElementById('sfLast').value.trim();
+  const email = document.getElementById('sfEmail').value.trim();
+  const pass = document.getElementById('sfPass').value;
+  const school = document.getElementById('sfSchool').value.trim();
+  const grade = document.getElementById('sfGrade').value;
+  if(!first||!last||!email||!pass){ showToast('Please fill in all required fields','error'); return; }
+  if(pass.length<6){ showToast('Password must be at least 6 characters','error'); return; }
+  const user = { name:first+' '+last, firstName:first, lastName:last, email, pass:btoa(pass), school, grade, avatar:first[0].toUpperCase() };
+  const saved = localStorage.getItem('stemforyou_users');
+  const users = saved?JSON.parse(saved):[];
+  if(users.find(u=>u.email===email)){ showToast('Email already registered','error'); return; }
+  users.push(user);
+  localStorage.setItem('stemforyou_users', JSON.stringify(users));
+  appState.user = user;
+  appState.projects = PROJECT_TEMPLATES.map(p=>({...p}));
+  appState.badges = ALL_BADGES.map(b=>({...b}));
+  saveDB();
+  initApp();
+}
+
+// ══════════════════════════════════════════════
+// INIT APP
+// ══════════════════════════════════════════════
+function initApp(){
+  const u = appState.user;
+  document.getElementById('userAvatar').textContent = u.avatar||u.firstName[0];
+  document.getElementById('greetingName').textContent = `Hello, ${u.firstName||u.name.split(' ')[0]} 👋`;
+  document.getElementById('greetingSub').textContent = `${u.grade||'Student'} · ${u.school||'Kenya'}`;
+  document.getElementById('heroBanner').innerHTML = `Ready to explore <span>STEM today</span>, ${u.firstName||u.name.split(' ')[0]}?`;
+  updateXPDisplay();
+  renderLessons('all');
+  renderSubjectsGrid();
+  renderCareers();
+  renderProjects();
+  renderProgress();
+  initChat();
+  showScreen('app');
+}
+
+function updateXPDisplay(){
+  document.getElementById('xpDisplay').textContent = `${appState.xp} XP`;
+  document.getElementById('poXP').textContent = appState.xp;
+  const total = LESSONS.length;
+  const done = appState.completedLessons.length;
+  const pct = total>0?Math.round((done/total)*100):0;
+  document.getElementById('overallProg').style.width = pct+'%';
+  document.getElementById('overallProgPct').textContent = pct+'%';
+  document.getElementById('statLessons').textContent = done;
+  document.getElementById('statBadges').textContent = appState.badges.filter(b=>b.earned).length;
+  document.getElementById('statProjects').textContent = appState.projects.filter(p=>p.progress>0).length;
+  document.getElementById('poLessons').textContent = done;
+  document.getElementById('poProjects').textContent = appState.projects.filter(p=>p.progress>0).length;
+  document.getElementById('poBadges').textContent = appState.badges.filter(b=>b.earned).length;
+}
+
+// ══════════════════════════════════════════════
+// LESSONS
+// ══════════════════════════════════════════════
+function renderLessons(filter='all'){
+  const list = document.getElementById('lessonList');
+  const filtered = filter==='all'?LESSONS:LESSONS.filter(l=>l.subject===filter);
+  list.innerHTML = filtered.map((l,idx)=>{
+    const done = appState.completedLessons.includes(l.id);
+    return `<div class="lesson-card" onclick="openLesson('${l.id}')">
+      <div class="lc-icon-wrap" style="background:${l.bg}"><span style="font-size:1.5rem;">${l.icon}</span></div>
+      <div style="flex:1;min-width:0;">
+        <div class="lc-subject" style="color:${l.color}">${l.subject.toUpperCase()}</div>
+        <div class="lc-title">${l.title}</div>
+        <div class="lc-meta">⏱ ${l.mins} min · ${l.level}</div>
+      </div>
+      <div class="lc-right">
+        <div class="lc-xp">+${l.xp} XP</div>
+        <div>${done?'<span class="lc-done">✅</span>':'<span style="font-size:.75rem;color:var(--muted);font-weight:700;">START</span>'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterLessons(subject){
+  document.querySelectorAll('.subject-chip').forEach(c=>c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  renderLessons(subject);
+}
+
+function openLesson(id){
+  const lesson = LESSONS.find(l=>l.id===id);
+  if(!lesson) return;
+  currentLesson = lesson;
+  currentStep = 0;
+  quizAnswered = false;
+  document.getElementById('readerTitle').textContent = lesson.title;
+  renderStep(0);
+  showScreen('lessonReader');
+}
+
+function renderStep(stepIdx){
+  const lesson = currentLesson;
+  const step = lesson.steps[stepIdx];
+  const total = lesson.steps.length;
+  document.getElementById('readerProgress').textContent = `${stepIdx+1} of ${total}`;
+  document.getElementById('readerProgFill').style.width = ((stepIdx+1)/total*100)+'%';
+  const isLast = stepIdx===total-1;
+  const btn = document.getElementById('nextStepBtn');
+  btn.textContent = isLast?'Complete Lesson ✅':'Next →';
+  btn.className = 'btn-next-step'+(isLast?' btn-complete':'');
+
+  let html = `<div class="lesson-step active">
+    <div class="step-tag" style="background:${step.tagColor}22;color:${step.tagColor}">${step.tag}</div>
+    <div class="step-heading">${step.heading}</div>`;
+
+  if(step.image){
+    html += `<div class="lesson-hero-img" style="background-image:url('${step.image.url}')"><div class="lesson-img-caption">📍 ${step.image.caption}</div></div>`;
+  }
+  if(step.body) html += `<div class="step-body">${step.body}</div>`;
+  if(step.code) html += `<div class="code-lab"><div class="code-lab-title">💻 Try / Read This Code</div>${escapeHtml(step.code)}</div>`;
+  if(step.fact) html += `<div class="fact-box"><div class="fb-title">💡 ${step.fact.title}</div><p>${step.fact.text}</p></div>`;
+  if(step.kenya) html += `<div class="kenya-box"><div class="kb-title">🇰🇪 ${step.kenya.title}</div><p>${step.kenya.text}</p></div>`;
+  if(step.activity){
+    html += `<div class="activity-box"><div class="ab-title">🎲 Activity: ${step.activity.title}</div>
+      <div class="activity-meta"><span class="activity-pill">⏱ ${step.activity.duration}</span><span class="activity-pill">👥 ${step.activity.mode}</span></div>
+      <ol class="lesson-list">${step.activity.instructions.map(i=>`<li>${i}</li>`).join('')}</ol>
+      <div class="mini-note"><strong>Deliverable:</strong> ${step.activity.deliverable}</div></div>`;
+  }
+  if(step.checklist){
+    html += `<div class="checklist-box"><div class="cl-title">✅ Success Checklist</div><ul class="lesson-list">${step.checklist.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+  }
+  if(step.quiz){
+    quizAnswered = false;
+    html += `<div class="quiz-section">
+      <div class="quiz-q">❓ ${step.quiz.q}</div>
+      <div class="quiz-opts">
+        ${step.quiz.opts.map((o,i)=>`<button class="quiz-opt" onclick="checkQuiz(${i},${step.quiz.answer})" id="qopt${i}">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+      </div>
+    </div>`;
+  }
+  if(step.project){
+    html += `<div class="project-brief"><div class="pb-title">🛠️ ${step.project.title}</div><p>${step.project.brief}</p>
+      <p style="margin-top:10px;font-weight:900;">Project requirements:</p>
+      <ul class="lesson-list">${step.project.requirements.map(i=>`<li>${i}</li>`).join('')}</ul>
+      ${step.project.extension?`<div class="mini-note" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff;"><strong>Stretch goal:</strong> ${step.project.extension}</div>`:''}
+    </div>`;
+  }
+  if(step.reflection){
+    html += `<div class="reflection-box"><div class="rb-title">🧠 Reflection</div><ul class="lesson-list">${step.reflection.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+  }
+  if(step.career){
+    html += `<div class="career-banner">
+      <div class="cb-title">🎯 Career Opportunities</div>
+      <p style="font-size:.88rem;margin-top:4px;">With this knowledge, you could become:</p>
+      <div class="cb-careers">${step.career.careers.map(c=>`<div class="career-chip">${c}</div>`).join('')}</div>
+    </div>`;
+  }
+  html += `</div>`;
+  document.getElementById('readerBody').innerHTML = html;
+  document.getElementById('readerBody').scrollTop = 0;
+}
+
+function escapeHtml(value){
+  return String(value)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#039;');
+}
+
+function checkQuiz(selected, correct){
+  if(quizAnswered) return;
+  quizAnswered = true;
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach((o,i)=>{
+    if(i===correct) o.classList.add('correct');
+    else if(i===selected&&selected!==correct) o.classList.add('wrong');
+    o.onclick = null;
+  });
+  if(selected===correct){
+    showToast('Correct! 🎉 Great job!','success');
+    awardXP(10);
+  } else {
+    showToast('Not quite — the green answer is correct! 📚');
+  }
+}
+
+function nextStep(){
+  const total = currentLesson.steps.length;
+  if(currentStep < total-1){
+    currentStep++;
+    renderStep(currentStep);
+  } else {
+    completeLesson();
+  }
+}
+
+function completeLesson(){
+  if(!appState.completedLessons.includes(currentLesson.id)){
+    appState.completedLessons.push(currentLesson.id);
+    awardXP(currentLesson.xp);
+    showToast(`+${currentLesson.xp} XP! Lesson complete! 🏆`,'xp');
+    checkBadges();
+    saveDB();
+  }
+  closeReader();
+}
+
+function closeReader(){
+  updateXPDisplay();
+  renderLessons('all');
+  renderProgress();
+  showScreen('app');
+}
+
+// ══════════════════════════════════════════════
+// EXPLORE / SUBJECTS
+// ══════════════════════════════════════════════
+function renderSubjectsGrid(){
+  const grid = document.getElementById('subjectsGrid');
+  grid.innerHTML = SUBJECTS.map(s=>{
+    const done = appState.completedLessons.filter(id=>LESSONS.find(l=>l.id===id&&l.subject===s.id)).length;
+    const total = LESSONS.filter(l=>l.subject===s.id).length;
+    const pct = total>0?Math.round((done/total)*100):0;
+    return `<div class="subj-card" onclick="switchTabAndFilter('${s.id}')">
+      <div class="sc-tag" style="color:${s.color}">${s.tag}</div>
+      <div class="sc-emoji">${s.emoji}</div>
+      <div class="sc-name">${s.name}</div>
+      <div class="sc-count">${total} lessons · ${done} done</div>
+      <div class="sc-bar"><div class="sc-bar-fill" style="width:${pct}%;background:${s.color}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function switchTabAndFilter(subject){
+  // Switch to home tab and filter
+  const nav = document.querySelectorAll('.nav-item');
+  nav.forEach((n,i)=>n.classList.toggle('active',i===0));
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tabHome').classList.add('active');
+  filterLessons(subject);
+  // Scroll to lessons
+  setTimeout(()=>document.getElementById('lessonList').scrollIntoView({behavior:'smooth'}),100);
+}
+
+function renderCareers(){
+  const list = document.getElementById('careersList');
+  list.innerHTML = CAREERS.map(c=>`
+    <div class="career-path-card">
+      <div class="cpc-icon" style="background:${c.color}"><span style="font-size:1.4rem">${c.icon}</span></div>
+      <div>
+        <div class="cpc-name">${c.name}</div>
+        <div class="cpc-desc">${c.desc}</div>
+        <div class="cpc-salary">💰 ${c.salary}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════
+// PROJECTS
+// ══════════════════════════════════════════════
+function renderProjects(){
+  const list = document.getElementById('projectList');
+  if(!appState.projects||!appState.projects.length){
+    list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--muted);"><div style="font-size:3rem;margin-bottom:12px;">🛠️</div><div style="font-weight:700;">No projects yet!</div><div style="font-size:.85rem;margin-top:6px;">Tap "Start New Project" above to begin building.</div></div>';
+    return;
+  }
+  list.innerHTML = appState.projects.map(p=>`
+    <div class="project-card">
+      <div class="pc-header">
+        <div class="pc-title">${p.title}</div>
+        <div class="pc-status status-${p.status}">${p.status==='active'?'Active':p.status==='progress'?'In Progress':'To Do'}</div>
+      </div>
+      <div class="pc-desc">${p.desc}</div>
+      <div class="pc-prog-label"><span>Progress</span><span>${p.progress}%</span></div>
+      <div class="pc-prog-bar"><div class="pc-prog-fill" style="width:${p.progress}%"></div></div>
+      <div class="pc-tags">${p.tags.map(t=>`<div class="pc-tag">${t}</div>`).join('')}</div>
+      <div class="pc-actions">
+        <button class="pc-btn pc-btn-view" onclick="viewProjectSteps('${p.id}')">View Steps 📋</button>
+        <button class="pc-btn pc-btn-update" onclick="updateProjectStep('${p.id}')">Update ✏️</button>
+      </div>
+    </div>`).join('');
+}
+
+function viewProjectSteps(id){
+  const p = appState.projects.find(pr=>pr.id===id);
+  if(!p) return;
+  const doneCount = p.steps.filter((s,i)=>p.doneSteps&&p.doneSteps.includes(i)).length;
+  document.getElementById('projectModalTitle').textContent = p.title;
+  document.getElementById('projectModalBody').innerHTML = `
+    <div style="font-size:.82rem;color:var(--muted);margin-bottom:12px;font-weight:600;">${doneCount} of ${p.steps.length} steps completed</div>
+    <div class="step-list">
+      ${p.steps.map((s,i)=>{
+        const done = p.doneSteps&&p.doneSteps.includes(i);
+        return `<div class="step-item">
+          <div class="step-check${done?' done':''}" onclick="toggleStep('${p.id}',${i})"><span class="check-icon">✓</span></div>
+          <div class="step-text${done?' done':''}">${s}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  document.getElementById('projectModal').classList.add('open');
+}
+
+function toggleStep(pid, stepIdx){
+  const p = appState.projects.find(pr=>pr.id===pid);
+  if(!p) return;
+  if(!p.doneSteps) p.doneSteps=[];
+  const i = p.doneSteps.indexOf(stepIdx);
+  if(i===-1) p.doneSteps.push(stepIdx);
+  else p.doneSteps.splice(i,1);
+  p.progress = Math.round((p.doneSteps.length/p.steps.length)*100);
+  p.status = p.progress===0?'todo':p.progress===100?'active':'progress';
+  saveDB();
+  viewProjectSteps(pid);
+  renderProjects();
+  updateXPDisplay();
+  checkBadges();
+  if(p.progress>0) awardXP(5);
+}
+
+function updateProjectStep(id){
+  viewProjectSteps(id);
+}
+
+function closeProjectModal(){ document.getElementById('projectModal').classList.remove('open'); }
+
+function openNewProject(){ document.getElementById('newProjectModal').classList.add('open'); }
+function closeNewProject(){ document.getElementById('newProjectModal').classList.remove('open'); }
+
+function createProject(){
+  const title = document.getElementById('npTitle').value.trim();
+  const desc = document.getElementById('npDesc').value.trim();
+  const subject = document.getElementById('npSubject').value;
+  if(!title){ showToast('Please enter a project title','error'); return; }
+  const newP = {
+    id:'p'+Date.now(), title, desc:desc||'My custom STEM project', subject, status:'todo', progress:0,
+    steps:['Define the problem you are solving','Research and gather information','Design your solution (sketch or diagram)','Build or code your solution','Test your solution','Improve based on testing','Present your results'],
+    tags:[subject,'Custom','My Project'], doneSteps:[],
+  };
+  appState.projects.push(newP);
+  saveDB();
+  closeNewProject();
+  renderProjects();
+  checkBadges();
+  showToast('Project created! Start completing steps 🛠️','success');
+}
+
+// ══════════════════════════════════════════════
+// PROGRESS
+// ══════════════════════════════════════════════
+function renderProgress(){
+  updateXPDisplay();
+  // Badges
+  const bg = document.getElementById('badgeGrid');
+  bg.innerHTML = ALL_BADGES.map(badge=>{
+    const earned = appState.badges.find(b=>b.id===badge.id)?.earned;
+    return `<div class="badge-item${earned?'':' badge-locked'}">
+      <div class="badge-icon">${badge.icon}</div>
+      <div class="badge-name">${badge.name}</div>
+    </div>`;
+  }).join('');
+  // Subject progress
+  const spl = document.getElementById('subjectProgressList');
+  spl.innerHTML = SUBJECTS.map(s=>{
+    const done = appState.completedLessons.filter(id=>LESSONS.find(l=>l.id===id&&l.subject===s.id)).length;
+    const total = LESSONS.filter(l=>l.subject===s.id).length;
+    const pct = total>0?Math.round((done/total)*100):0;
+    return `<div class="subject-prog-item">
+      <div class="spi-icon">${s.emoji}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="spi-name">${s.name}</div>
+        <div class="spi-bar-bg"><div class="spi-bar-fill" style="width:${pct}%;background:${s.color}"></div></div>
+      </div>
+      <div class="spi-pct">${pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+// BADGES & XP
+// ══════════════════════════════════════════════
+function awardXP(amount){
+  appState.xp += amount;
+  updateXPDisplay();
+  if(appState.xp>=100) earnBadge('xp_100');
+  saveDB();
+}
+
+function earnBadge(id){
+  const badge = appState.badges.find(b=>b.id===id);
+  if(badge&&!badge.earned){
+    badge.earned = true;
+    showToast(`🏅 Badge unlocked: ${badge.name}!`,'xp');
+    renderProgress();
+    saveDB();
+  }
+}
+
+function checkBadges(){
+  const done = appState.completedLessons;
+  if(done.length>=1) earnBadge('first_lesson');
+  if(done.filter(id=>LESSONS.find(l=>l.id===id&&l.subject==='coding')).length>=2) earnBadge('coder');
+  if(done.filter(id=>LESSONS.find(l=>l.id===id&&l.subject==='science')).length>=2) earnBadge('science_star');
+  const subjects = new Set(done.map(id=>LESSONS.find(l=>l.id===id)?.subject));
+  if(subjects.size>=3) earnBadge('explorer');
+  if(appState.projects.some(p=>p.progress>0)) earnBadge('project_starter');
+  if(done.some(id=>['s1','a1','b1'].includes(id))) earnBadge('kenya_pride');
+}
+
+// ══════════════════════════════════════════════
+// CHATBOT
+// ══════════════════════════════════════════════
+const QUICK_REPLIES_INITIAL = ['What careers are available?','Help me with coding','Explain robotics','STEM universities in Kenya','How to improve my KCSE?'];
+
+function initChat(){
+  const msgs = document.getElementById('chatMessages');
+  msgs.innerHTML = '';
+  addBotMessage(`Habari! 👋 Mimi ni **${BOT_NAME}**, your STEM guide!\n\nI can help you with:\n• Coding, Robotics, Maths, Science\n• First Aid, Electrical Systems, AgriTech\n• Career guidance for Kenya\n• KCSE preparation tips\n\nWhat would you like to explore today? 🚀`, QUICK_REPLIES_INITIAL);
+}
+
+function addBotMessage(text, quickReplies=[]){
+  const msgs = document.getElementById('chatMessages');
+  const time = new Date().toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'});
+  const formattedText = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  const qr = quickReplies.length?`<div class="quick-replies">${quickReplies.map(r=>`<button class="quick-reply" onclick="quickReply('${r}')">${r}</button>`).join('')}</div>`:'';
+  msgs.innerHTML += `<div class="msg bot">
+    <div class="msg-bubble">${formattedText}</div>
+    <div class="msg-time">${BOT_NAME} · ${time}</div>
+    ${qr}
+  </div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addUserMessage(text){
+  const msgs = document.getElementById('chatMessages');
+  const time = new Date().toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'});
+  msgs.innerHTML += `<div class="msg user">
+    <div class="msg-bubble">${text}</div>
+    <div class="msg-time">${time}</div>
+  </div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping(){
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg bot typing-wrapper';
+  div.innerHTML = `<div class="typing-indicator show"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  div.id = 'typingIndicator';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function hideTyping(){
+  const t = document.getElementById('typingIndicator');
+  if(t) t.remove();
+}
+
+function sendChat(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  input.style.height = '';
+  addUserMessage(text);
+  showTyping();
+  const delay = 800 + Math.random()*600;
+  setTimeout(()=>{
+    hideTyping();
+    const response = getBotResponse(text);
+    const followUps = ['Tell me more','What career should I choose?','Show me a lesson on this','Quiz me!'];
+    addBotMessage(response, followUps.slice(0,2));
+    awardXP(2);
+  }, delay);
+}
+
+function quickReply(text){
+  document.getElementById('chatInput').value = text;
+  sendChat();
+}
+
+function chatEnter(e){
+  if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendChat(); }
+}
+
+function autoResize(el){
+  el.style.height='';
+  el.style.height=Math.min(el.scrollHeight,100)+'px';
+}
+
+function openChat(){
+  showScreen('chatScreen');
+}
+function closeChat(){
+  showScreen('app');
+}
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function switchTab(tabId, el){
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  if(tabId==='tabProgress') renderProgress();
+  if(tabId==='tabProjects') renderProjects();
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function gotoAuth(){ showScreen('auth'); }
+
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+function showToast(msg, type='info'){
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast${type==='success'?' success':type==='xp'?' xp':type==='error'?' xp':''}`;
+  toast.textContent = msg;
+  if(type==='error') toast.style.background='var(--red)';
+  container.appendChild(toast);
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>toast.classList.add('show')); });
+  setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(),400); }, 3000);
+}
+
+// ══════════════════════════════════════════════
+// API DOCUMENTATION (Built-in)
+// ══════════════════════════════════════════════
+function renderApiDocs(){
+  document.getElementById('apiBody').innerHTML = `
+    <div class="api-section">
+      <h3>🔐 Authentication API</h3>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px;">All API calls use Base64-encoded tokens stored in localStorage. Integrate with your backend by replacing these endpoints.</p>
+      <div class="code-block">
+<span class="c">// POST /api/v1/auth/signup</span>
+{
+  <span class="k">"firstName"</span>: <span class="s">"Wanjiku"</span>,
+  <span class="k">"lastName"</span>: <span class="s">"Kamau"</span>,
+  <span class="k">"email"</span>: <span class="s">"wanjiku@email.com"</span>,
+  <span class="k">"password"</span>: <span class="s">"hashed_password"</span>,
+  <span class="k">"school"</span>: <span class="s">"Nairobi"</span>,
+  <span class="k">"grade"</span>: <span class="s">"Form 2"</span>
+}
+<span class="c">// Response: { "token": "JWT_TOKEN", "user": {...} }</span>
+      </div>
+    </div>
+    <div class="api-section">
+      <h3>📚 Lessons API</h3>
+      <div class="code-block">
+<span class="c">// GET /api/v1/lessons</span>
+<span class="c">// GET /api/v1/lessons/:id</span>
+<span class="c">// POST /api/v1/lessons/:id/complete</span>
+<span class="c">// Headers: Authorization: Bearer {token}</span>
+
+<span class="c">// Response structure:</span>
+{
+  <span class="k">"id"</span>: <span class="s">"c1"</span>,
+  <span class="k">"subject"</span>: <span class="s">"coding"</span>,
+  <span class="k">"title"</span>: <span class="s">"What is Coding?"</span>,
+  <span class="k">"xp"</span>: 50,
+  <span class="k">"steps"</span>: [...]
+}
+      </div>
+    </div>
+    <div class="api-section">
+      <h3>🛠️ Projects API</h3>
+      <div class="code-block">
+<span class="c">// GET  /api/v1/projects</span>
+<span class="c">// POST /api/v1/projects (create)</span>
+<span class="c">// PUT  /api/v1/projects/:id/steps (update step)</span>
+
+{
+  <span class="k">"title"</span>: <span class="s">"Build LED Circuit"</span>,
+  <span class="k">"subject"</span>: <span class="s">"electrical"</span>,
+  <span class="k">"progress"</span>: 40,
+  <span class="k">"doneSteps"</span>: [0, 1, 2]
+}
+      </div>
+    </div>
+    <div class="api-section">
+      <h3>🤖 Chatbot API</h3>
+      <div class="code-block">
+<span class="c">// POST /api/v1/chat</span>
+{
+  <span class="k">"message"</span>: <span class="s">"Explain coding to me"</span>,
+  <span class="k">"userId"</span>: <span class="s">"user_123"</span>,
+  <span class="k">"context"</span>: <span class="s">"lesson_c1"</span>
+}
+<span class="c">// Integrate with Anthropic API or OpenAI for full AI:</span>
+<span class="c">// POST https://api.anthropic.com/v1/messages</span>
+<span class="k">Authorization</span>: <span class="s">x-api-key: YOUR_ANTHROPIC_KEY</span>
+      </div>
+    </div>
+    <div class="api-section">
+      <h3>📊 Progress API</h3>
+      <div class="code-block">
+<span class="c">// GET /api/v1/progress/:userId</span>
+{
+  <span class="k">"xp"</span>: 450,
+  <span class="k">"streak"</span>: 7,
+  <span class="k">"completedLessons"</span>: [<span class="s">"c1"</span>, <span class="s">"r1"</span>],
+  <span class="k">"badges"</span>: [{<span class="k">"id"</span>:<span class="s">"first_lesson"</span>, <span class="k">"earned"</span>: true}],
+  <span class="k">"subjectProgress"</span>: {<span class="k">"coding"</span>: 45}
+}
+      </div>
+    </div>
+    <div class="api-section">
+      <h3>🔑 Admin Content API (Add/Update Lessons)</h3>
+      <div class="code-block">
+<span class="c">// POST /api/v1/admin/lessons (add new lesson)</span>
+<span class="c">// PUT  /api/v1/admin/lessons/:id (update lesson)</span>
+<span class="c">// DELETE /api/v1/admin/lessons/:id</span>
+<span class="c">// Admin Key: X-Admin-Key: {YOUR_ADMIN_SECRET}</span>
+
+<span class="c">// Recommended backend stack:</span>
+<span class="c">// Node.js + Express + MongoDB Atlas (free tier)</span>
+<span class="c">// Deploy: Railway.app or Render.com (free hosting)</span>
+      </div>
+    </div>
+    <div class="api-section">
+      <h3>🌐 Backend Integration Guide</h3>
+      <div class="code-block">
+<span class="c">// Replace localStorage calls with API calls:</span>
+<span class="c">// 1. Install: Node.js, Express, MongoDB Atlas</span>
+<span class="c">// 2. npm install express mongoose jsonwebtoken bcrypt</span>
+<span class="c">// 3. Create .env file:</span>
+<span class="s">MONGODB_URI=mongodb+srv://...</span>
+<span class="s">JWT_SECRET=your_secret_key</span>
+<span class="s">ANTHROPIC_API_KEY=your_claude_key</span>
+<span class="s">PORT=3000</span>
+<span class="c">// 4. Deploy to Railway.app for free</span>
+<span class="c">// 5. Update API_BASE_URL in this file</span>
+      </div>
+    </div>`;
+}
+
+function closeApiDocs(){ showScreen('app'); }
+
+// ══════════════════════════════════════════════
+// STARTUP SEQUENCE — robust boot for local files and slow networks
+// ══════════════════════════════════════════════
+let booted = false;
+function bootApp(){
+  if(booted) return;
+  booted = true;
+  try{ loadDB(); }catch(e){ console.warn('Could not load saved progress:', e); }
+
+  setTimeout(()=>{
+    try{
+      if(appState.user){
+        initApp();
+      } else {
+        const seen = safeGet('stemforyou_seen');
+        if(seen){ gotoAuth(); }
+        else {
+          safeSet('stemforyou_seen','1');
+          showScreen('onboard');
+        }
+      }
+    }catch(e){
+      console.error('Startup failed:', e);
+      // Never leave the learner stuck on the splash screen.
+      showScreen('onboard');
+    }
+  }, 2200);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', bootApp);
+}else{
+  bootApp();
+}
+window.addEventListener('load', bootApp);
+// Extra safety: if external fonts or images delay the load event, still start.
+setTimeout(bootApp, 3000);
+
+// PWA Service Worker (only on secure http/https contexts; never block startup)
+try{
+  if('serviceWorker' in navigator && window.isSecureContext && location.protocol !== 'file:'){
+    const sw = `
+      const CACHE='stemforyou-v1';
+      self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['/']))));
+      self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+    `;
+    const blob = new Blob([sw],{type:'application/javascript'});
+    const url = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(url).catch(()=>{});
+  }
+}catch(e){}
+
+// Add long-press on header XP to show API docs
+document.addEventListener('DOMContentLoaded',()=>{
+  let pressTimer;
+  const xpEl = document.getElementById('xpDisplay');
+  if(xpEl){
+    xpEl.addEventListener('touchstart',()=>{ pressTimer=setTimeout(()=>{ renderApiDocs(); showScreen('apiDocs'); },1500); });
+    xpEl.addEventListener('touchend',()=>clearTimeout(pressTimer));
+    xpEl.addEventListener('mousedown',()=>{ pressTimer=setTimeout(()=>{ renderApiDocs(); showScreen('apiDocs'); },1500); });
+    xpEl.addEventListener('mouseup',()=>clearTimeout(pressTimer));
+  }
+});
+</script>
+</body>
+</html>
